@@ -20,7 +20,7 @@
                 State : RunState 
             }
             
-(* 
+(* // Fronm C compiler -> keeps memory of clock cycles or smg, ct remember
   void advance_pc (SWORD offset)
 {
     PC  =  nPC;
