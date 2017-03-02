@@ -20,3 +20,10 @@
                 State : RunState 
             }
             
+(* 
+  void advance_pc (SWORD offset)
+{
+    PC  =  nPC;
+   nPC  += offset;
+} 
+*)
