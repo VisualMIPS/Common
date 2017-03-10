@@ -2,14 +2,14 @@
 <doc>
 <assembly><name>VisualMIPS</name></assembly>
 <members>
-<member name="T:VisualMIPS.instructions">
+<member name="T:VisualMIPS.Instructions">
 <summary>
  ===========================================
  Instruction types
  ===========================================
 </summary>
 </member>
-<member name="T:VisualMIPS.types">
+<member name="T:VisualMIPS.Types">
 <summary>
  ===========================================
  Global types for this project

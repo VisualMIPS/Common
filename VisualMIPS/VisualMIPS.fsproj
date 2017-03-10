@@ -50,8 +50,8 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="types.fs" />
     <Compile Include="datastruct.fs" />
-    <None Include="tokeniser.fsx" />
-    <None Include="parser.fsx" />
+    <Compile Include="tokeniser.fs" />
+    <Compile Include="parser.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
   </ItemGroup>

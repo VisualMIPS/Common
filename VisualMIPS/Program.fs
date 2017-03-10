@@ -1,7 +1,11 @@
-﻿// Learn more about F# at http://fsharp.org
-// See the 'F# Tutorial' project for more help.
+﻿namespace VisualMIPS
 
-[<EntryPoint>]
-let main argv = 
-    printfn "%A" argv
-    0 // return an integer exit code
+open Types
+open Instructions
+open Parser
+open Tokeniser
+
+module main =
+    let input = tokenise "ADD 1, 2, 3, 0"
+    printfn "Instr: %A" (checkType input)
+    System.Console.ReadKey() |> ignore
