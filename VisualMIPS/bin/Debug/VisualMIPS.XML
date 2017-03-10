@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>VisualMIPS</name></assembly>
+<members>
+<member name="T:VisualMIPS.instructions">
+<summary>
+ ===========================================
+ Instruction types
+ ===========================================
+</summary>
+</member>
+<member name="T:VisualMIPS.types">
+<summary>
+ ===========================================
+ Global types for this project
+ ===========================================
+</summary>
+</member>
+</members>
+</doc>
