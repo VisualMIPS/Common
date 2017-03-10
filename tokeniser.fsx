@@ -3,12 +3,13 @@
 *)
 
 module Tokeniser =
-    // Placeholder functions from Tick4, will be replaced.
-    // Need Error responses for different situations.
-    type tokenResponse =
-        | VarValue of int // for commands that return data
-        | TokeniseError // if command string is invalid
-        | OK // for valid commads that return no data
-    // Need tokenise function to return tokens to parse
+
+    // Need tokenise function to return tokens to parse. Simple split string into components
     let tokenise (s: string) = 
-        Array.filter ((<>) "") (s.Split(' ' , '\t','\n','\r','\f'))  
+        Array.filter ((<>) "") (s.Split(' ',',','\t','\n','\r','\f'))
+
+    // Helper function in case web input is one large string and outputs array of strings representing new lines
+    let split (input: string) =
+        Array.filter ((<>) "") (input.Split('\n','\r','\f'))
+
+    // Tokeniser does not handle error checking. This is done by the parser when it checks each parameter.
