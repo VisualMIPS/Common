@@ -19,3 +19,4 @@ module Parser =
     // Functions can be listed in map and indexed by name, e.g. Map<name of String, function> -> <"add", addFunction>
     let parse instrMap (tokens: string[]) =            
         Map.find tokens.[0] instrMap
+        
