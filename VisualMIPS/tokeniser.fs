@@ -1,6 +1,4 @@
-﻿(*  Tokeniser
-    VisualMIPS 2017
-*)
+﻿namespace VisualMIPS
 
 module Tokeniser =
 

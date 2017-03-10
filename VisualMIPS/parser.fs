@@ -1,8 +1,10 @@
-﻿(*  Tokeniser
-    VisualMIPS 2017
-*)
+﻿namespace VisualMIPS
 
 module Parser =
+
+    open Types
+    open Instructions
+
     // Placeholder functions from Tick4, will be replaced.
     // Need Error responses for different parsing situations
     type parseResponse =
@@ -15,8 +17,13 @@ module Parser =
     let isAlpha s = Regex.IsMatch (s, @"^[a-zA-Z]+$")
 
     let isNum s = Regex.IsMatch (s, @"^-?[0-9]+$")
-    // Need parse function to take in tokens and output function handle and data
-    // Functions can be listed in map and indexed by name, e.g. Map<name of String, function> -> <"add", addFunction>
-    let parse instrMap (tokens: string[]) =            
-        Map.find tokens.[0] instrMap
-        
+
+
+    // Need parse function to take in tokens and output instruction type
+    let parse (tokens: string[]) =            
+        let opcode = tokens.[0]
+        let r_s = uint32(tokens.[1])
+        let r_t = uint32(tokens.[2])
+        let r_d = uint32(tokens.[3])
+        let shift = byte(tokens.[4])
+        {opcode; r_s; r_t; r_d; shift}
