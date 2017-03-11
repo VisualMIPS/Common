@@ -6,3 +6,11 @@ C:\Users\Ben\Documents\GitHub\Common\VisualMIPS\bin\Debug\FSharp.Core.dll
 C:\Users\Ben\Documents\GitHub\Common\VisualMIPS\bin\Debug\FSharp.Core.xml
 C:\Users\Ben\Documents\GitHub\Common\VisualMIPS\obj\Debug\VisualMIPS.exe
 C:\Users\Ben\Documents\GitHub\Common\VisualMIPS\obj\Debug\VisualMIPS.pdb
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\bin\Debug\VisualMIPS.exe.config
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\bin\Debug\VisualMIPS.XML
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\bin\Debug\VisualMIPS.exe
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\bin\Debug\VisualMIPS.pdb
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\bin\Debug\FSharp.Core.dll
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\bin\Debug\FSharp.Core.xml
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\obj\Debug\VisualMIPS.exe
+C:\Users\Ben Withers\Documents\GitHub\Common\VisualMIPS\obj\Debug\VisualMIPS.pdb

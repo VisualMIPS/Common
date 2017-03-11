@@ -5,7 +5,7 @@ module Parser =
     open Types
     open Instructions
 
-    // Placeholder functions from Tick4, will be replaced.
+    (*// Placeholder functions from Tick4, will be replaced.
     // Need Error responses for different parsing situations
     type parseResponse =
         | VarValue of int // for commands that return data
@@ -16,7 +16,7 @@ module Parser =
     // Need alpha (for function names) and num (for values) to identify valid tokens
     let isAlpha s = Regex.IsMatch (s, @"^[a-zA-Z]+$")
 
-    let isNum s = Regex.IsMatch (s, @"^-?[0-9]+$")
+    let isNum s = Regex.IsMatch (s, @"^-?[0-9]+$")*)
 
     // Need parse function to take in tokens and output instruction type
     let parseI_Type (iTokens: string[]) =
@@ -38,9 +38,27 @@ module Parser =
         let r_d = Register(int(rTokens.[3]))
         let shift = Shiftval(byte(rTokens.[4]))
         {opcode=opcode; r_s=r_s; r_t=r_t; r_d=r_d; shift=shift}
-
-    let checkType (tokens: string[]) =
+    
+    /// Parses Token into Instruction
+    let parse (tokens: string[]) =
         if Map.containsKey tokens.[0] IMap then I (parseI_Type tokens)
         elif Map.containsKey tokens.[0] JMap then J (parseJ_Type tokens)
         elif Map.containsKey tokens.[0] RMap then R (parseR_Type tokens)
         else failwith "Invalid Opcode: Does not exist in MIPS I!"
+
+    // Print instruction helper functions
+    let printI_Type (instr: I_type) =
+        printfn "Opcode: %A, $s: %A, $t: %A, imm: %A" instr.opcode instr.r_s instr.r_t instr.immed
+
+    let printJ_Type (instr: J_type) =
+        printfn "Opcode: %A, target: %A" instr.opcode instr.target
+
+    let printR_Type (instr: R_type) =
+        printfn "Opcode: %A, $s: %A, $t: %A, $d: %A, shift: %A" instr.opcode instr.r_s instr.r_t instr.r_d instr.shift
+    
+    /// Prints parsed Instruction for debugging
+    let printInstr (instr: Instruction) =
+        match instr with
+        | I(x) -> printI_Type x
+        | J(x) -> printJ_Type x
+        | R(x) -> printR_Type x

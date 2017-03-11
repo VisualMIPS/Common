@@ -9,6 +9,86 @@
  ===========================================
 </summary>
 </member>
+<member name="P:VisualMIPS.MachineState.initialise">
+<summary>
+ Initialises Machine State at start of program
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.printState(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Prints entire Machine State
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Memory,System.UInt32)">
+<summary>
+ Sets value into specified Memory location
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.setLo(VisualMIPS.MachineState.MachineState,System.UInt32)">
+<summary>
+ Sets value into Low Register
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.setHi(VisualMIPS.MachineState.MachineState,System.UInt32)">
+<summary>
+ Sets value into High Register
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.setReg(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Register,System.UInt32)">
+<summary>
+ Sets value into specified Register
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getNextPC(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Gets next PC value
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getPC(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Gets current PC value
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getMem(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Memory)">
+<summary>
+ Gets value of specified Memory location
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getLo(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Gets value of Low Register
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getHi(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Gets value of High Register
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getReg(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Register)">
+<summary>
+ Gets value of specified Register
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.printInstr(VisualMIPS.Instructions.Instruction)">
+<summary>
+ Prints parsed Instruction for debugging
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parse(System.String[])">
+<summary>
+ Parses Token into Instruction
+</summary>
+</member>
+<member name="M:VisualMIPS.Tokeniser.split(System.String)">
+<summary>
+ Splits large string into lines
+</summary>
+</member>
+<member name="M:VisualMIPS.Tokeniser.tokenise(System.String)">
+<summary>
+ Tokenise single string/line into Tokens
+</summary>
+</member>
 <member name="T:VisualMIPS.Types">
 <summary>
  ===========================================
