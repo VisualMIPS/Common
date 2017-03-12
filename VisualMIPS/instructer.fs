@@ -12,15 +12,15 @@ module Executor =
     let processHILO (mach : MachineState) (instr: Instruction) = failwith "Not Implemented"
 
     let processR (machIn : MachineState) (instr: Instruction) =
-        let localMap = Map [(AND,opAND),(ADDU,opADDU)]
+        let localMap = Map [(AND,opAND)] //;(ADDU,opADDU)]
         Map.find instr.opcode localMap
-
+    (*
     let opTypeMap = Map    [([DIV; DIVU; MULT; MULTU],processMultDiv);
                         ([MFHI; MFLO; MTHI; MTLO],processHILO)
         ]
 
     ///Sweet code
-    (*
+    
     let executeRType (mach : MachineState) (instr : R_type) =
         let rS = getReg mach instr.r_s
         let rT = getReg mach instr.r_t
@@ -34,13 +34,13 @@ module Executor =
         | XOR -> opXOR mach instr rS rT
         | SLT | SLTU | DIV | DIVU | MULT | MULTU -> failwith "Not Implemented"
         | JR | JALR | MFHI | MFLO | MTHI | MTLO -> failwith "Not Implemented"
-    *)
+    
 
     let executeInstruction (machIn : MachineState, instr : Instruction) =
         let key = Map.findKey (fun x _ -> List.contains instr.opcode x) opTypeMap //Could be slightly simpler by addition
         let fn = Map.find key opTypeMap
         fn machIn instr
-
+    *)
 
     //let opADD (mach: MachineState, R_type: instr, Word rS, Word rT) =  to be coded
 

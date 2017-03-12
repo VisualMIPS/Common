@@ -19,22 +19,22 @@
  Prints entire Machine State
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Memory,System.UInt32)">
+<member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Memory,VisualMIPS.Types.Word)">
 <summary>
  Sets value into specified Memory location
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setLo(VisualMIPS.MachineState.MachineState,System.UInt32)">
+<member name="M:VisualMIPS.MachineState.setLo(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Word)">
 <summary>
  Sets value into Low Register
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setHi(VisualMIPS.MachineState.MachineState,System.UInt32)">
+<member name="M:VisualMIPS.MachineState.setHi(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Word)">
 <summary>
  Sets value into High Register
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setReg(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Register,System.UInt32)">
+<member name="M:VisualMIPS.MachineState.setReg(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Register,VisualMIPS.Types.Word)">
 <summary>
  Sets value into specified Register
 </summary>

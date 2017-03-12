@@ -96,9 +96,12 @@ module Instructions =
                     ("MTHI", MTHI);
                     ("MTLO", MTLO);]
 
+    type Instr_Type = | I | J | R
+
     type Instruction =
         {
         opcode : Opcode
+        instr_type : Instr_Type
         rs : Register
         rt : Register
         rd : Register

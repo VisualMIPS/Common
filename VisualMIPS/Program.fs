@@ -12,6 +12,6 @@ module main =
     printfn "Instr: %A" (parse input)
 
     // Test Machine State Initialise and print
-    let state = initialise
-    printState state |> ignore
+    let mach = initialise
+    printState mach |> ignore
     System.Console.ReadKey() |> ignore

@@ -24,12 +24,12 @@ module Parser =
         let r_s = Register(int(iTokens.[1]))
         let r_t = Register(int(iTokens.[2]))
         let immed = Half(uint16(iTokens.[3]))
-        {opcode=opcode; r_s=r_s; r_t=r_t; immed=immed}
+        {opcode=opcode; instr_type = I; rs=r_s; rt=r_t; rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
 
     let parseJ_Type (jTokens: string[]) =            
         let opcode = Map.find jTokens.[0] JMap
         let target = Targetval(uint32(jTokens.[1]))
-        {opcode=opcode; target=target}
+        {opcode=opcode; instr_type = J; rs=Register(0); rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=Half(0us); target=target}
 
     let parseR_Type (rTokens: string[]) =            
         let opcode = Map.find rTokens.[0] RMap
@@ -37,28 +37,29 @@ module Parser =
         let r_t = Register(int(rTokens.[2]))
         let r_d = Register(int(rTokens.[3]))
         let shift = Shiftval(byte(rTokens.[4]))
-        {opcode=opcode; r_s=r_s; r_t=r_t; r_d=r_d; shift=shift}
+        {opcode=opcode; instr_type = R; rs=r_s; rt=r_t; rd=r_d; shift=shift; immed=Half(0us); target=Targetval(0u)}
     
     /// Parses Token into Instruction
     let parse (tokens: string[]) =
-        if Map.containsKey tokens.[0] IMap then I (parseI_Type tokens)
-        elif Map.containsKey tokens.[0] JMap then J (parseJ_Type tokens)
-        elif Map.containsKey tokens.[0] RMap then R (parseR_Type tokens)
+        if Map.containsKey tokens.[0] IMap then parseI_Type tokens
+        elif Map.containsKey tokens.[0] JMap then parseJ_Type tokens
+        elif Map.containsKey tokens.[0] RMap then parseR_Type tokens
         else failwith "Invalid Opcode: Does not exist in MIPS I!"
 
     // Print instruction helper functions
-    let printI_Type (instr: I_type) =
-        printfn "Opcode: %A, $s: %A, $t: %A, imm: %A" instr.opcode instr.r_s instr.r_t instr.immed
+    let printI_Type (instr: Instruction) =
+        printfn "Opcode: %A, $s: %A, $t: %A, imm: %A" instr.opcode instr.rs instr.rt instr.immed
 
-    let printJ_Type (instr: J_type) =
+    let printJ_Type (instr: Instruction) =
         printfn "Opcode: %A, target: %A" instr.opcode instr.target
 
-    let printR_Type (instr: R_type) =
-        printfn "Opcode: %A, $s: %A, $t: %A, $d: %A, shift: %A" instr.opcode instr.r_s instr.r_t instr.r_d instr.shift
+    let printR_Type (instr: Instruction) =
+        printfn "Opcode: %A, $s: %A, $t: %A, $d: %A, shift: %A" instr.opcode instr.rs instr.rt instr.rd instr.shift
     
     /// Prints parsed Instruction for debugging
     let printInstr (instr: Instruction) =
         match instr with
-        | I(x) -> printI_Type x
-        | J(x) -> printJ_Type x
-        | R(x) -> printR_Type x
+        | x when instr.instr_type = I -> printI_Type x
+        | x when instr.instr_type = J -> printJ_Type x
+        | x when instr.instr_type = R -> printR_Type x
+        | _ -> failwith "Invalid Instruction!"

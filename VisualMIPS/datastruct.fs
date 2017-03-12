@@ -21,76 +21,76 @@ module MachineState =
         }
 
     /// Gets value of specified Register
-    let getReg (state:MachineState) (reg: Register) =
-        Map.find reg state.RegMap
+    let getReg (mach:MachineState) (reg: Register) =
+        Map.find reg mach.RegMap
     
     /// Gets value of High Register
-    let getHi (state: MachineState) =
-        state.Hi
+    let getHi (mach: MachineState) =
+        mach.Hi
        
     /// Gets value of Low Register
-    let getLo (state: MachineState) =
-        state.Lo
+    let getLo (mach: MachineState) =
+        mach.Lo
 
     /// Gets value of specified Memory location
-    let getMem (state:MachineState) (mem: Memory) =
-        Map.find mem state.MemMap
+    let getMem (mach:MachineState) (mem: Memory) =
+        Map.find mem mach.MemMap
 
     
     /// Gets current PC value
-    let getPC (state:MachineState) =
-        state.pc
+    let getPC (mach:MachineState) =
+        mach.pc
 
     /// Gets next PC value
-    let getNextPC (state:MachineState) =
-        state.pcNext
+    let getNextPC (mach:MachineState) =
+        mach.pcNext
 
     /// Sets value into specified Register
-    let setReg (state:MachineState) (reg: Register) (data: Word) =
-        let newRegMap = Map.add reg data state.RegMap
-        let newState = {state with RegMap = newRegMap}
-        newState
+    let setReg (mach:MachineState) (reg: Register) (data: Word) =
+        let newRegMap = Map.add reg data mach.RegMap
+        let newMach = {mach with RegMap = newRegMap}
+        newMach
 
     /// Sets value into High Register
-    let setHi (state: MachineState) (data: Word) =
-        let newState = {state with Hi = data}
-        newState
+    let setHi (mach: MachineState) (data: Word) =
+        let newMach = {mach with Hi = data}
+        newMach
 
     /// Sets value into Low Register
-    let setLo (state: MachineState) (data: Word) =
-        let newState = {state with Lo = data}
-        newState
+    let setLo (mach: MachineState) (data: Word) =
+        let newMach = {mach with Lo = data}
+        newMach
     
     /// Sets value into specified Memory location
-    let setMem (state:MachineState) (mem: Memory) (data: Word) =
-        let newMemMap = Map.add mem data state.MemMap
-        let newState = {state with MemMap = newMemMap}
-        newState
+    let setMem (mach:MachineState) (mem: Memory) (data: Word) =
+        let newMemMap = Map.add mem data mach.MemMap
+        let newMach = {mach with MemMap = newMemMap}
+        newMach
 
     /// Prints entire Machine State
-    let printState (state:MachineState) =
+    let printState (mach:MachineState) =
         printfn "Current Machine State:"
-        printfn "PC: \t\t%A" state.pc
-        printfn "PCNext: \t%A" state.pcNext
-        printfn "State: \t\t%A" state.State
+        printfn "PC: \t\t%A" mach.pc
+        printfn "PCNext: \t%A" mach.pcNext
+        printfn "State: \t\t%A" mach.State
 
         printfn "Registers:"
         for i in 0..31 do
-            printfn "\t\tR%A:\t%A" i state.RegMap.[Register(i)]
-        printfn "\t\tHigh:\t%A" state.Hi
-        printfn "\t\tLow:\t%A" state.Lo
+            printfn "\t\tR%A:\t%A" i mach.RegMap.[Register(i)]
+        printfn "\t\tHigh:\t%A" mach.Hi
+        printfn "\t\tLow:\t%A" mach.Lo
 
-        printfn "Memory: %A" state.MemMap
+        printfn "Memory: %A" mach.MemMap
     
     /// Initialises Machine State at start of program
     let initialise =
         let regMap =
             let reg = [|0..31|]
-            reg |> Array.map (fun i -> (Register(i), 0u)) |> Map.ofArray
+            reg |> Array.map (fun i -> (Register(i), Word(0u))) |> Map.ofArray
 
         let memMap = Map.empty
 
-        {RegMap=regMap; Hi=0u; Lo=0u; MemMap=memMap; State=RunOK; pc=0u; pcNext=4u}
+        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u)}
             
 (* // Fronm C compiler -> keeps memory of clock cycles or smg, ct remember
   void advance_pc (SWORD offset)
