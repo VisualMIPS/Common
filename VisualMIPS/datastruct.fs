@@ -11,13 +11,13 @@ module MachineState =
         
     type MachineState = 
         { 
-        RegMap : Map<Register, uint32>
-        Hi : uint32
-        Lo : uint32
-        MemMap : Map<Memory, uint32> 
+        RegMap : Map<Register, Word>
+        Hi : Word
+        Lo : Word
+        MemMap : Map<Memory, Word> 
         State : RunState
-        pc : uint32
-        pcNext : uint32
+        pc : Word
+        pcNext : Word
         }
 
     /// Gets value of specified Register
@@ -46,23 +46,23 @@ module MachineState =
         state.pcNext
 
     /// Sets value into specified Register
-    let setReg (state:MachineState) (reg: Register) (data: uint32) =
+    let setReg (state:MachineState) (reg: Register) (data: Word) =
         let newRegMap = Map.add reg data state.RegMap
         let newState = {state with RegMap = newRegMap}
         newState
 
     /// Sets value into High Register
-    let setHi (state: MachineState) (data: uint32) =
+    let setHi (state: MachineState) (data: Word) =
         let newState = {state with Hi = data}
         newState
 
     /// Sets value into Low Register
-    let setLo (state: MachineState) (data: uint32) =
+    let setLo (state: MachineState) (data: Word) =
         let newState = {state with Lo = data}
         newState
     
     /// Sets value into specified Memory location
-    let setMem (state:MachineState) (mem: Memory) (data: uint32) =
+    let setMem (state:MachineState) (mem: Memory) (data: Word) =
         let newMemMap = Map.add mem data state.MemMap
         let newState = {state with MemMap = newMemMap}
         newState

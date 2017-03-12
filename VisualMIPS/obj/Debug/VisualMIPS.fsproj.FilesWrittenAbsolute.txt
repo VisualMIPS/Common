@@ -1,0 +1,4 @@
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/obj/Debug/.NETFramework,Version=v4.5.2.AssemblyAttribute.fs
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/obj/Debug/VisualMIPS.exe
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/obj/Debug/VisualMIPS.pdb
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/FSharp.Core.dll

@@ -1,46 +1,47 @@
 //Decode/depatch
+namespace VisualMIPS
 
-executeInstr -> MachineState -> Instruction -> MachineState
+module Executor =
+    open Types
+    open Instructions
+    open MachineState
+    open Stuff
 
-let executeInstruction (machIn : MachineState, instr : Instruction) =
-    match instr with:
-    | I iInstr -> executeIType machIn iInstr
-    | J jInstr -> executeJType machIn jInstr
-    | R rInstr -> executeRType machIn rInstr
-    
-    
-let executeJType (mach : MachineState, J_Type : instr) =
-    match J_Type.opcode with
-    | J -> 
-    | JAL ->
+    let processMultDiv (mach : MachineState) (instr: Instruction) = failwith "Not Implemented"
 
-let executeIType (mach : MachineState, I_type : instr) =
+    let processHILO (mach : MachineState) (instr: Instruction) = failwith "Not Implemented"
 
-let executeRType (mach : MachineState, R_type : instr) =
-    let rS = mach.getReg instr.r_s
-    let rT = mach.getReg instr.r_t
-    match R_Type.opcode with
-    | ADD -> opADD mach instr rS rT
-    | ADDU ->
-    | AND -> opAND mach instr rS rT //repetitive, can do better, with a curried function or smg
-    | OR -> opOR mach instr rS rT
-    | SRA -> opSRA mach instr rS rT
-    | SRAV | SRL | SRLV | SLL | SLLV | SUB | SUBU 
-    | XOR -> opXOR mach instr rS rT
-    | SLT | SLTU | DIV | DIVU | MULT | MULTU 
-    | JR | JALR | MFHI | MFLO | MTHI | MTLO
+    let processR (machIn : MachineState) (instr: Instruction) =
+        let localMap = Map [(AND,opAND),(ADDU,opADDU)]
+        Map.find instr.opcode localMap
 
-let opADD (mach: MachineState, R_type: instr, Word rS, Word rT) = // to be coded
+    let opTypeMap = Map    [([DIV; DIVU; MULT; MULTU],processMultDiv);
+                        ([MFHI; MFLO; MTHI; MTLO],processHILO)
+        ]
 
-let opAND (mach: MachineState, R_type: instr, Word rS, Word rT) =
-    mach.setReg instr.r_d (rS &&& rT)
+    ///Sweet code
+    (*
+    let executeRType (mach : MachineState) (instr : R_type) =
+        let rS = getReg mach instr.r_s
+        let rT = getReg mach instr.r_t
+        match instr.opcode with
+        | ADD -> failwith "Not Implemented"
+        | ADDU -> failwith "Not Implemented"
+        | AND -> opAND mach instr rS rT //repetitive, can do better, with a curried function or smg
+        | OR -> opOR mach instr rS rT
+        | SRA -> opSRA mach instr rS rT
+        | SRAV | SRL | SRLV | SLL | SLLV | SUB | SUBU -> failwith "Not Implemented"
+        | XOR -> opXOR mach instr rS rT
+        | SLT | SLTU | DIV | DIVU | MULT | MULTU -> failwith "Not Implemented"
+        | JR | JALR | MFHI | MFLO | MTHI | MTLO -> failwith "Not Implemented"
+    *)
 
-let opOR (mach: MachineState, R_type: instr, Word rS, Word rT) =
-    mach.setReg instr.r_d (rS ||| rT)
+    let executeInstruction (machIn : MachineState, instr : Instruction) =
+        let key = Map.findKey (fun x _ -> List.contains instr.opcode x) opTypeMap //Could be slightly simpler by addition
+        let fn = Map.find key opTypeMap
+        fn machIn instr
 
-let opSRA (mach: MachineState, R_type: instr, Word rS, Word rT) =
-      mach.setReg instr.r_d (rS >>> instr.shift) //should pass shift already retrieved ?
 
-let opXOR (mach: MachineState, R_type: instr, Word rS, Word rT) =
-    mach.setReg instr.r_d (rS ^^^ rT)
-    
+    //let opADD (mach: MachineState, R_type: instr, Word rS, Word rT) =  to be coded
+
+
