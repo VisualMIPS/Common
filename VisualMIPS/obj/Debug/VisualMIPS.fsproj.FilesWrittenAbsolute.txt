@@ -2,3 +2,8 @@
 /Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/obj/Debug/VisualMIPS.exe
 /Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/obj/Debug/VisualMIPS.pdb
 /Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/FSharp.Core.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/VisualMIPS.exe.config
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/VisualMIPS.exe.mdb
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/VisualMIPS.pdb
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/VisualMIPS.exe
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/obj/Debug/VisualMIPS.exe.mdb
