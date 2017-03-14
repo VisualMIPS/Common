@@ -16,8 +16,9 @@ module MachineState =
         Lo : Word
         MemMap : Map<Memory, Word> 
         State : RunState
-        pc : Word
-        pcNext : Word
+        pc : Word //The instruction currently running
+        pcNext : Word //The address of the next instruction to run
+        pcNextNext : Word option //The address of the instruction to run after that
         }
 
     /// Gets value of specified Register
@@ -44,6 +45,23 @@ module MachineState =
     /// Gets next PC value
     let getNextPC (mach:MachineState) =
         mach.pcNext
+    
+    let getNextNextPC (mach:MachineState) =
+        mach.pcNextNext
+
+    let setNextNextPC (next:Word) (mach:MachineState) =
+        {mach with pcNextNext = Some next}
+
+    let advancePC (mach:MachineState) =
+        let m = {mach with pc = mach.pcNext}
+        let m2 = match mach.pcNextNext with
+                |Some nnext -> {mach with pcNext = nnext}
+                |None -> {mach with pcNext = mach.pcNext+4}
+        {m2 with pcNextNext = None}
+
+    /// Sets next, next PC value
+    let setNextNextPC (next:Word) (mach:MachineState) =
+        {mach with pcNextNext = next}
 
     /// Sets value into specified Register
     let setReg (reg: Register) (data: Word) (mach:MachineState) =
