@@ -5,7 +5,8 @@ module Rtypes =
     open Instructions
     open MachineState
     
-    //simpleR functions
+    //simpleR functions --> convert to match statement later as repetitive
+    // + no need to pass MachineState vrbl as unused in all simpleR functions
 
     //bear in mind that when a user writes a negative number, 
     // it is stored as a 2's complement in the uint32 type
@@ -42,16 +43,31 @@ module Rtypes =
     let opSLT (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         //signed comparison -> convert as signed nbr to treat them as so
         match int32(rS) < int32(rT) with
-        | true -> Word(uint32 1)
-        | false -> Word(uint32 0)
+        | true -> Word(1u) //1u = uint32 1
+        | false -> Word(0u)
     
     let opSLTU (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         //unsigned comparison, no pre-processing on rT or rS
         match rS < rT with
-        | true -> Word(uint32 1)
-        | false -> Word(uint32 0)
+        | true -> Word(1u)
+        | false -> Word(0u)
+    
+    let opMFHI (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
+        //useless rs and rt, just returns HI
+        mach.Hi
+
+    let opMFLO (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
+        //just returns LO
+        mach.Lo
 
     //shiftR functions
 
     let opSRA (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) (Shiftval shiftval) =
-        failwithf "not implemented yet"
+        //does not need rS passed to it
+        Word( uint32 (int32 rT >>> int32 shiftval) )
+    
+    let opSRL (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) (Shiftval shiftval) =
+        Word( rT >>> int32 shiftval )
+
+    let opSLL (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) (Shiftval shiftval) =
+        Word( rT <<< int32 shiftval )
