@@ -12,7 +12,7 @@ module Executor =
     let processHILO (mach : MachineState) (instr: Instruction) = failwith "Not Implemented"
 
     let processSimpleR (mach : MachineState) (instr: Instruction) =
-        let localMap = Map [(AND,opAND);(OR, opOR); (XOR, opXOR)]
+        let localMap = Map [(AND,opAND);(OR, opOR); (SRAV,opSRAV); (XOR, opXOR);]
         let rs = getReg mach instr.rs
         let rt = getReg mach instr.rt
         let fn = Map.find instr.opcode localMap
