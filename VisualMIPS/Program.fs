@@ -14,11 +14,12 @@ module main =
     printfn "Instr: %A \n" instr 
 
     // Test Machine State Initialise and print
-    let mach = initialise
-    let mach2 = setReg mach (Register 1) (Word 32u) 
-    let mach3 = executeInstruction mach2 instr 
-    
-    printState mach3 |> ignore
+    initialise
+    |> setReg (Register 1) (Word 32u)
+    |> executeInstruction instr
+    |> printState
+    |> ignore
+
     System.Console.ReadKey() |> ignore
 
     

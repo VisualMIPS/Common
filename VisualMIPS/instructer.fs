@@ -7,25 +7,25 @@ module Executor =
     open MachineState
     open Rtypes
 
-    let processMultDiv (mach : MachineState) (instr: Instruction) = failwith "Not Implemented"
+    let processMultDiv (instr: Instruction)  (mach : MachineState)= failwith "Not Implemented"
 
-    let processHILO (mach : MachineState) (instr: Instruction) = failwith "Not Implemented"
+    let processHILO (instr: Instruction) (mach : MachineState) = failwith "Not Implemented"
 
-    let processSimpleR (mach : MachineState) (instr: Instruction) =
+    let processSimpleR (instr: Instruction) (mach : MachineState) =
         let localMap = Map [(AND,opAND);(OR, opOR); (SRAV,opSRAV); (XOR, opXOR);]
-        let rs = getReg mach instr.rs
-        let rt = getReg mach instr.rt
+        let rs = getReg instr.rs mach
+        let rt = getReg instr.rt mach
         let fn = Map.find instr.opcode localMap
         let output = fn mach instr rs rt
-        setReg mach instr.rd output
+        setReg instr.rd output mach
     
-    let processShiftR (mach : MachineState) (instr : Instruction) =
+    let processShiftR (instr : Instruction) (mach : MachineState) =
         let localMap = Map [(SRA, opSRA)]
-        let rs = getReg mach instr.rs
-        let rt = getReg mach instr.rt
+        let rs = getReg instr.rs mach
+        let rt = getReg instr.rt mach
         let fn = Map.find instr.opcode localMap
         let output = fn mach instr rs rt instr.shift
-        setReg mach instr.rd output
+        setReg instr.rd output mach
 
     let opTypeMap = Map [([DIV; DIVU; MULT; MULTU],processMultDiv);
                         ([MFHI; MFLO; MTHI; MTLO],processHILO);
@@ -33,7 +33,7 @@ module Executor =
                         ([SRA],processShiftR)
                         ]
 
-    let executeInstruction (mach : MachineState) (instr : Instruction) =
-        let key = Map.findKey (fun x _ -> List.contains instr.opcode x) opTypeMap //Could be slightly simpler by addition
+    let executeInstruction (instr : Instruction) (mach : MachineState) =
+        let key = Map.findKey (fun x _ -> List.contains instr.opcode x) opTypeMap //Could be slightly simpler with a map.findWith style
         let fn = Map.find key opTypeMap
-        fn mach instr
+        fn instr mach

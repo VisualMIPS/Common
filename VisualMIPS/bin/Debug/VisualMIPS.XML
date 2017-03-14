@@ -19,22 +19,22 @@
  Prints entire Machine State
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Memory,VisualMIPS.Types.Word)">
+<member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.Types.Memory,VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
 <summary>
  Sets value into specified Memory location
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setLo(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Word)">
+<member name="M:VisualMIPS.MachineState.setLo(VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
 <summary>
  Sets value into Low Register
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setHi(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Word)">
+<member name="M:VisualMIPS.MachineState.setHi(VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
 <summary>
  Sets value into High Register
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setReg(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Register,VisualMIPS.Types.Word)">
+<member name="M:VisualMIPS.MachineState.setReg(VisualMIPS.Types.Register,VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
 <summary>
  Sets value into specified Register
 </summary>
@@ -49,7 +49,7 @@
  Gets current PC value
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.getMem(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Memory)">
+<member name="M:VisualMIPS.MachineState.getMem(VisualMIPS.Types.Memory,VisualMIPS.MachineState.MachineState)">
 <summary>
  Gets value of specified Memory location
 </summary>
@@ -64,7 +64,7 @@
  Gets value of High Register
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.getReg(VisualMIPS.MachineState.MachineState,VisualMIPS.Types.Register)">
+<member name="M:VisualMIPS.MachineState.getReg(VisualMIPS.Types.Register,VisualMIPS.MachineState.MachineState)">
 <summary>
  Gets value of specified Register
 </summary>

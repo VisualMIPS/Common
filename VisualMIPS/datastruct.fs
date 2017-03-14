@@ -21,7 +21,7 @@ module MachineState =
         }
 
     /// Gets value of specified Register
-    let getReg (mach:MachineState) (reg: Register) =
+    let getReg (reg: Register) (mach:MachineState) =
         Map.find reg mach.RegMap
     
     /// Gets value of High Register
@@ -33,7 +33,7 @@ module MachineState =
         mach.Lo
 
     /// Gets value of specified Memory location
-    let getMem (mach:MachineState) (mem: Memory) =
+    let getMem (mem: Memory) (mach:MachineState) =
         Map.find mem mach.MemMap
 
     
@@ -46,23 +46,23 @@ module MachineState =
         mach.pcNext
 
     /// Sets value into specified Register
-    let setReg (mach:MachineState) (reg: Register) (data: Word) =
+    let setReg (reg: Register) (data: Word) (mach:MachineState) =
         let newRegMap = Map.add reg data mach.RegMap
         let newMach = {mach with RegMap = newRegMap}
         newMach
 
     /// Sets value into High Register
-    let setHi (mach: MachineState) (data: Word) =
+    let setHi (data: Word) (mach: MachineState) =
         let newMach = {mach with Hi = data}
         newMach
 
     /// Sets value into Low Register
-    let setLo (mach: MachineState) (data: Word) =
+    let setLo (data: Word)  (mach: MachineState)=
         let newMach = {mach with Lo = data}
         newMach
     
     /// Sets value into specified Memory location
-    let setMem (mach:MachineState) (mem: Memory) (data: Word) =
+    let setMem (mem: Memory) (data: Word) (mach:MachineState) =
         let newMemMap = Map.add mem data mach.MemMap
         let newMach = {mach with MemMap = newMemMap}
         newMach
