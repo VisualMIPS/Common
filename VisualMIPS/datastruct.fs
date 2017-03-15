@@ -54,14 +54,15 @@ module MachineState =
 
     let advancePC (mach:MachineState) =
         let m = {mach with pc = mach.pcNext}
-        let m2 = match mach.pcNextNext with
-                |Some nnext -> {mach with pcNext = nnext}
-                |None -> {mach with pcNext = mach.pcNext+4}
+        let m2 = 
+            match mach.pcNextNext with
+            |Some nnext -> {mach with pcNext = nnext}
+            |None -> {mach with pcNext = Word (T.getValue(mach.pcNext)+4u)}
         {m2 with pcNextNext = None}
 
     /// Sets next, next PC value
     let setNextNextPC (next:Word) (mach:MachineState) =
-        {mach with pcNextNext = next}
+        {mach with pcNextNext = Some next}
 
     /// Sets value into specified Register
     let setReg (reg: Register) (data: Word) (mach:MachineState) =
@@ -108,7 +109,7 @@ module MachineState =
 
         let memMap = Map.empty
 
-        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u)}
+        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u); pcNextNext= (* Some Word(8u) *)}
             
 (* // Fronm C compiler -> keeps memory of clock cycles or smg, ct remember
   void advance_pc (SWORD offset)

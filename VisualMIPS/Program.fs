@@ -21,5 +21,6 @@ module main =
     |> ignore
 
     System.Console.ReadKey() |> ignore
-
+    
+    //for testing, remember to test invalid inputs 
     

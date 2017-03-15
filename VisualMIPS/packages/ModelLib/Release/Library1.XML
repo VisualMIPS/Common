@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doc>
+<assembly><name>Library1</name></assembly>
+<members>
+<member name="M:Model.Model.makeEnvironment">
+<summary>
+ Return a new environment function with embedded stsate
+</summary>
+</member>
+</members>
+</doc>

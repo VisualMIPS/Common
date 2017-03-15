@@ -13,17 +13,17 @@ module Executor =
 
     let processBranchI (instr: Instruction) (mach : MachineState) =
         let immed = (T.getValue instr.immed)
-        let rs = getReg instr.rs mach
-        let rt = getReg instr.rt mach //Only used in a couple.
+        let rs = T.getValue( getReg instr.rs mach )
+        let rt = T.getValue( getReg instr.rt mach )//Only used in a couple.
         let (branch, link) = match instr.opcode with
-                                | BGEZ when rs >= 0 -> (true,false)
-                                | BGEZAL when rs >= 0 -> (true,true)
-                                | BEQ when rs == rt -> (true,false)
-                                | BNE when rs != rt -> (true,false)
-                                | BLEZ when rs <= 0 -> (true, false)
-                                | BLTZ when rs < 0 -> (true, false)
-                                | BLTZAL when rs < 0 -> (true, true)
-                                | BGTZ when rs >= 0 -> (true, false)
+                                | BGEZ when rs >= 0u -> (true,false)
+                                | BGEZAL when rs >= 0u -> (true,true)
+                                | BEQ when rs = rt -> (true,false)
+                                | BNE when rs <> rt -> (true,false)
+                                | BLEZ when rs <= 0u -> (true, false)
+                                | BLTZ when rs < 0u -> (true, false)
+                                | BLTZAL when rs < 0u -> (true, true)
+                                | BGTZ when rs >= 0u -> (true, false)
                                 //FIXME: Do the link commands always link? Spec seems to suggest that.
                                 | _ -> (false, false)
         setNextNextPC (Word ((getNextPC mach |> T.getValue) + 4u*(uint32 immed))) //need to sign extend when converting to uint32
