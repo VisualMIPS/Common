@@ -16,11 +16,16 @@ module main =
     // Test Machine State Initialise and print
     initialise
     |> setReg (Register 1) (Word 32u)
-    |> executeInstruction instr
+    |> setReg (Register 2) (Word 32u)
+    |> executeInstruction instr // Result is 32u
     |> printState
     |> ignore
 
+<<<<<<< HEAD
     System.Console.ReadKey() |> ignore
     
     //for testing, remember to test invalid inputs 
     
+=======
+    System.Console.ReadKey() |> ignore
+>>>>>>> 0d8f0a8eaa5ee0883dcb6f29ac8cf594da7a9bae
