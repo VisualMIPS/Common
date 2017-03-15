@@ -46,26 +46,29 @@ module Instructions =
                     ("ANDI", ANDI);
                     ("ORI", ORI);
                     ("XORI", XORI);
-                    ("BEQ", BEQ);
-                    ("BGEZ", BGEZ);
-                    ("BGEZAL", BGEZAL);
-                    ("BGTZ", BGTZ);
-                    ("BLEZ", BLEZ);
-                    ("BLTZ", BLTZ);
-                    ("BLTZAL", BLTZAL);
-                    ("BNE", BNE);
-                    ("LB", LB);
-                    ("LBU", LBU);
-                    ("LH", LH);
-                    ("LW", LW);
-                    ("LWL", LWL);
-                    ("LWR", LWR);
-                    ("SB", SB);
-                    ("SH", SH);
-                    ("SW", SW);
-                    ("LUI", LUI);
                     ("SLTI", SLTI);
                     ("SLTIU", SLTIU)]
+
+    let I_OMap = Map [("BEQ", BEQ);
+                      ("BNE", BNE)]
+
+    let I_SOMap = Map [("BGEZ", BGEZ);
+                       ("BGEZAL", BGEZAL);
+                       ("BGTZ", BGTZ);
+                       ("BLEZ", BLEZ);
+                       ("BLTZ", BLTZ);
+                       ("BLTZAL", BLTZAL);
+                       ("LUI", LUI)]
+
+    let I_BOMap = Map [("LB", LB);
+                       ("LBU", LBU);
+                       ("LH", LH);
+                       ("LW", LW);
+                       ("LWL", LWL);
+                       ("LWR", LWR);
+                       ("SB", SB);
+                       ("SH", SH);
+                       ("SW", SW)]
 
     let JMap = Map [("J", J);
                     ("JAL", JAL)]
@@ -74,12 +77,6 @@ module Instructions =
                     ("ADDU", ADDU);
                     ("AND", AND);
                     ("OR", OR);
-                    ("SRA", SRA);
-                    ("SRAV", SRAV);
-                    ("SRL", SRL);
-                    ("SRLV", SRLV);
-                    ("SLL", SLL);
-                    ("SLLV", SLLV);
                     ("SUB", SUB);
                     ("SUBU", SUBU);
                     ("XOR", XOR);
@@ -89,14 +86,23 @@ module Instructions =
                     ("DIVU", DIVU);
                     ("MULT", MULT);
                     ("MULTU", MULTU);
-                    ("JR", JR);
-                    ("JALR", JALR);
                     ("MFHI", MFHI);
                     ("MFLO", MFLO);
                     ("MTHI", MTHI);
-                    ("MTLO", MTLO);]
+                    ("MTLO", MTLO)]
 
-    type Instr_Type = | I | J | R
+    let R_SMap = Map [("SRA", SRA);
+                      ("SRL", SRL);
+                      ("SLL", SLL)]
+
+    let R_VMap = Map [("SRAV", SRAV);
+                      ("SRLV", SRLV);
+                      ("SLLV", SLLV)]
+
+    let R_JMap = Map [("JR", JR);
+                      ("JALR", JALR);]
+
+    type Instr_Type = | I | J | R | I_O | I_SO | I_BO | R_V | R_S | R_J
 
     type Instruction =
         {

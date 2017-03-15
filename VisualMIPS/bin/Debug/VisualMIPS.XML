@@ -36,7 +36,7 @@
 </member>
 <member name="M:VisualMIPS.MachineState.setReg(VisualMIPS.Types.Register,VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
 <summary>
- Sets value into specified Register
+ Sets value into specified Register. If Register is 0, nothing is changed.
 </summary>
 </member>
 <member name="M:VisualMIPS.MachineState.setNextNextPC(VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
@@ -87,6 +87,51 @@
 <member name="M:VisualMIPS.Parser.parse(System.String[])">
 <summary>
  Parses Token into Instruction
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseR_J_Type(System.String[])">
+<summary>
+ Parse (Opcode rd, rs) or (Opcode rs)
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseR_S_Type(System.String[])">
+<summary>
+ Parse (Opcode rd, rt, shift)
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseR_V_Type(System.String[])">
+<summary>
+ Parse (Opcode rd, rt, rs)
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseR_Type(System.String[])">
+<summary>
+ Parse (Opcode rd, rs, rt)
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseJ_Type(System.String[])">
+<summary>
+ Parse (Opcode target)
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseI_BO_Type(System.String[])">
+<summary>
+ Parse (Opcode rt, offset(rs))
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseI_SO_Type(System.String[])">
+<summary>
+ Parse (Opcode rs, offset)
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseI_O_Type(System.String[])">
+<summary>
+ Parse (Opcode rs, rt, offset)
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.parseI_Type(System.String[])">
+<summary>
+ Parse (Opcode rt, rs, immediate)
 </summary>
 </member>
 <member name="M:VisualMIPS.Tokeniser.split(System.String)">
