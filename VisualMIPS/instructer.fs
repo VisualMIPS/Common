@@ -10,13 +10,13 @@ module Executor =
     let processMultDiv (instr: Instruction)  (mach : MachineState)= failwith "Not Implemented"
 
     let processHILO (instr: Instruction) (mach : MachineState) = failwith "Not Implemented"
-
+    (*
     let processBranchI (instr: Instruction) (mach : MachineState) =
         let immed = (T.getValue instr.immed)
         let rs = getReg instr.rs mach
         let rt = getReg instr.rt mach //Only used in a couple.
         let (branch, link) = match instr.opcode with
-                                | BGEZ when rs >= 0 -> (true,false)
+                                | BGEZ when rs >= 0 -> (true,false) //Plz can we use uint32 instead of Word
                                 | BGEZAL when rs >= 0 -> (true,true)
                                 | BEQ when rs == rt -> (true,false)
                                 | BNE when rs != rt -> (true,false)
@@ -27,7 +27,7 @@ module Executor =
                                 //FIXME: Do the link commands always link? Spec seems to suggest that.
                                 | _ -> (false, false)
         setNextNextPC (Word ((getNextPC mach |> T.getValue) + 4u*(uint32 immed))) //need to sign extend when converting to uint32
-
+    *)
     let processSimpleR (instr: Instruction) (mach : MachineState) =
         let localMap = Map [(AND,opAND);(OR, opOR); (SRAV,opSRAV); (XOR, opXOR);]
         let rs = getReg instr.rs mach

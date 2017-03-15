@@ -36,7 +36,6 @@ module MachineState =
     /// Gets value of specified Memory location
     let getMem (mem: Memory) (mach:MachineState) =
         Map.find mem mach.MemMap
-
     
     /// Gets current PC value
     let getPC (mach:MachineState) =
@@ -46,22 +45,21 @@ module MachineState =
     let getNextPC (mach:MachineState) =
         mach.pcNext
     
+    /// Gets next, next PC value
     let getNextNextPC (mach:MachineState) =
         mach.pcNextNext
-
-    let setNextNextPC (next:Word) (mach:MachineState) =
-        {mach with pcNextNext = Some next}
-
+    
+    /// Advances PC
     let advancePC (mach:MachineState) =
         let m = {mach with pc = mach.pcNext}
         let m2 = match mach.pcNextNext with
-                |Some nnext -> {mach with pcNext = nnext}
-                |None -> {mach with pcNext = mach.pcNext+4}
-        {m2 with pcNextNext = None}
+                 |Some nnext -> {mach with pcNext = nnext}
+                 |None -> {mach with pcNext = Word(T.getValue(mach.pcNext)+4u)}
+        {m2 with pcNextNext = None} // Someone plz explain what this does
 
     /// Sets next, next PC value
     let setNextNextPC (next:Word) (mach:MachineState) =
-        {mach with pcNextNext = next}
+        {mach with pcNextNext = Some next}
 
     /// Sets value into specified Register
     let setReg (reg: Register) (data: Word) (mach:MachineState) =
@@ -90,6 +88,7 @@ module MachineState =
         printfn "Current Machine State:"
         printfn "PC: \t\t%A" mach.pc
         printfn "PCNext: \t%A" mach.pcNext
+        printfn "PCNextNext: \t%A" mach.pcNextNext
         printfn "State: \t\t%A" mach.State
 
         printfn "Registers:"
@@ -107,9 +106,11 @@ module MachineState =
             reg |> Array.map (fun i -> (Register(i), Word(0u))) |> Map.ofArray
 
         let memMap = Map.empty
-
-        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u)}
+        // Should I initialise pcNextNext to None or 8u?
+        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u); pcNextNext=Some (Word(8u))}
             
+
+
 (* // Fronm C compiler -> keeps memory of clock cycles or smg, ct remember
   void advance_pc (SWORD offset)
 {

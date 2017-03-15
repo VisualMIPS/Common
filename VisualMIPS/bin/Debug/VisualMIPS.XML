@@ -39,6 +39,21 @@
  Sets value into specified Register
 </summary>
 </member>
+<member name="M:VisualMIPS.MachineState.setNextNextPC(VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
+<summary>
+ Sets next, next PC value
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.advancePC(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Advances PC
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getNextNextPC(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Gets next, next PC value
+</summary>
+</member>
 <member name="M:VisualMIPS.MachineState.getNextPC(VisualMIPS.MachineState.MachineState)">
 <summary>
  Gets next PC value
