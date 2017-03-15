@@ -46,11 +46,9 @@ module MachineState =
     let getNextPC (mach:MachineState) =
         mach.pcNext
     
+    /// Gets next, next PC value
     let getNextNextPC (mach:MachineState) =
         mach.pcNextNext
-
-    let setNextNextPC (next:Word) (mach:MachineState) =
-        {mach with pcNextNext = Some next}
 
     let advancePC (mach:MachineState) =
         let m = {mach with pc = mach.pcNext}
@@ -91,6 +89,7 @@ module MachineState =
         printfn "Current Machine State:"
         printfn "PC: \t\t%A" mach.pc
         printfn "PCNext: \t%A" mach.pcNext
+        printfn "PCNextNext: \t%A" mach.pcNextNext
         printfn "State: \t\t%A" mach.State
 
         printfn "Registers:"
@@ -109,7 +108,7 @@ module MachineState =
 
         let memMap = Map.empty
 
-        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u); pcNextNext= (* Some Word(8u) *)}
+        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u); pcNextNext= Some (Word(8u))}
             
 (* // Fronm C compiler -> keeps memory of clock cycles or smg, ct remember
   void advance_pc (SWORD offset)

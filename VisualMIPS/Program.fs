@@ -16,7 +16,8 @@ module main =
     // Test Machine State Initialise and print
     initialise
     |> setReg (Register 1) (Word 32u)
-    |> executeInstruction instr
+    |> setReg (Register 2) (Word 32u)
+    |> executeInstruction instr // Result is 32u
     |> printState
     |> ignore
 
