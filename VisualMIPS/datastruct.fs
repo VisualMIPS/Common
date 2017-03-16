@@ -37,7 +37,10 @@ module MachineState =
     let getMem (mem: Memory) (mach:MachineState) =
         Map.find mem mach.MemMap
 
-    
+    /// Gets current State value
+    let getState (mach:MachineState) =
+        mach.State
+
     /// Gets current PC value
     let getPC (mach:MachineState) =
         mach.pc
@@ -85,9 +88,14 @@ module MachineState =
         let newMemMap = Map.add mem data mach.MemMap
         let newMach = {mach with MemMap = newMemMap}
         newMach
+    
+    /// Sets value into State (RunState)
+    let setState (state: RunState) (mach:MachineState) =
+        let newMach = {mach with State = state}
+        newMach
 
     /// Prints entire Machine State
-    let printState (mach:MachineState) =
+    let printMachineState (mach:MachineState) =
         printfn "Current Machine State:"
         printfn "PC: \t\t%A" mach.pc
         printfn "PCNext: \t%A" mach.pcNext

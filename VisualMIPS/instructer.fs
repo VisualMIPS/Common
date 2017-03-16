@@ -49,8 +49,8 @@ module Executor =
                 match rs < rt with
                 | true -> 1u
                 | false -> 0u
-             | MFHI -> T.getValue(mach.Hi)
-             | MFLO -> T.getValue(mach.Lo)
+             | MFHI -> T.getValue(getHi mach)
+             | MFLO -> T.getValue(getLo mach)
              | _ -> failwith "opcode does not belong to processSimpleR functions"
         let output = Word(tmp)
         setReg instr.rd output mach
@@ -66,16 +66,29 @@ module Executor =
             | _ -> failwith "opcode does not belong to processShiftR functions"
         let output = Word(tmp)
         setReg instr.rd output mach
-    
-   (* let processFullR (instr: Instruction) (mach : MachineState) =
-        let localMap = Map [(ADD, opADD)]
+        
+
+    let processFullR (instr: Instruction) (mach : MachineState) =
+        let localMap = Map[(ADD,opADD);(SUB,opSUB);(DIV,opDIV);(DIVU,opDIVU);
+                        (MULT,opMULT);(MULTU,opMULTU);(JR,opJR);(JALR,opJALR);
+                        (MTHI,opMTHI);(MTHLO,opMTHLO)]
         let rs = getReg instr.rs mach
         let rt = getReg instr.rt mach
         let fn = Map.find instr.opcode localMap
-        let output = fn mach instr rs rt 
-    *)
+        // output dispatching
+        let returnmach =
+            match instr.opcode with
+            | ADD | SUB | JALR -> //can change rd
+                let (output,newmach) = fn mach instr rs rt
+                setReg instr.rd output newmach 
+            | DIV | DIVU | MULT | MULTU | JR | MTHI | MTHLO -> //no need to change rd
+                let newmach = fn mach instr rs rt
+                newmach 
+            | _ -> failwith "opcode does not belong to processFullR functions"
+        returnmach
 
-    
+
+
     // --------------- //
 
     let opTypeMap = Map [([DIV; DIVU; MULT; MULTU],processMultDiv);

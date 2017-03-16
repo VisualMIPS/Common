@@ -86,4 +86,5 @@ module main =
     System.Console.ReadKey() |> ignore
     
     //for testing, remember to test invalid inputs 
+    // Need add routine : checks MachineState.State != RuntimeErr or SyntaxErr
     
