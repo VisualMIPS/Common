@@ -11,20 +11,37 @@ module Parser =
         | VarValue of int // for commands that return data
         | ParseError // if command string is invalid
         | OK // for valid commads that return no data
-    
+    *)
     open System.Text.RegularExpressions
     // Need alpha (for function names) and num (for values) to identify valid tokens
-    let isAlpha s = Regex.IsMatch (s, @"^[a-zA-Z]+$")
+    //let isAlpha s = Regex.IsMatch (s, @"^[a-zA-Z]+$")
 
-    let isNum s = Regex.IsMatch (s, @"^-?[0-9]+$")*)
+    let isNum s = Regex.IsMatch (s, @"^-?[0-9]+$")
+
+    let regWithinRange (reg: int) =    match reg with
+                                            | x when x <= 31 && x >= 0 -> true
+                                            | _ -> false
+
+    let immWithinRange (imm: int) = match imm with
+                                    | x when x <= 32767 && x >= -32768 -> true
+                                    | _ -> false
 
     // Need parse function to take in tokens and output instruction type
 
     /// Parse (Opcode rt, rs, immediate)
-    let parseI_Type (iTokens: string[]) =
+    let parseI_Type (iTokens: string[]) =               
         let opcode = Map.find iTokens.[0] IMap
+
+        if not (isNum iTokens.[1]) then failwithf "rt: %A is invalid. Please use integers only." iTokens.[1]
+        if not (regWithinRange (int iTokens.[1])) then failwithf "rt: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
         let r_t = Register(int(iTokens.[1]))
+
+        if not (isNum iTokens.[2]) then failwithf "rs: %A is invalid. Please use integers only." iTokens.[2]
+        if not (regWithinRange (int iTokens.[2])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[2])
         let r_s = Register(int(iTokens.[2]))
+
+        if not (isNum iTokens.[3]) then failwithf "imm: %A is invalid. Please use integers only." iTokens.[3]
+        if not (immWithinRange (int iTokens.[3])) then failwithf "imm: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[3])
         let immed = Half(uint16(iTokens.[3]))
         {opcode=opcode; instr_type = I; rs=r_s; rt=r_t; rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
 
@@ -116,7 +133,7 @@ module Parser =
         elif Map.containsKey tokens.[0] R_VMap then parseR_V_Type tokens
         elif Map.containsKey tokens.[0] R_SMap then parseR_S_Type tokens
         elif Map.containsKey tokens.[0] R_JMap then parseR_J_Type tokens
-        else failwith "Invalid Opcode: Does not exist in MIPS I!"
+        else failwithf "Syntax Error! \nInvalid Operation: %A does not exist in MIPS I! \nIs your operation name all UPPERCASE?" tokens.[0]
 
     // Print instruction helper functions
     let printI_Type (instr: Instruction) =

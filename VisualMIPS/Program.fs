@@ -10,11 +10,11 @@ open Executor
 
 module main =
     // Test Tokeniser and Parser
-    let input = tokenise "ADDU 3, 4, 5"
-    let ADDU = parse input
-    printfn "Instr: %A \n" ADDU
-    printInstr ADDU
-    printfn "Code: %u" (convert ADDU)
+    let input = tokenise "AND 3, 4, 5"
+    let AND = parse input
+    printfn "Instr: %A \n" AND
+    printInstr AND
+    printfn "Code: %u" (convert AND)
     
     let input1 = tokenise "JR 1"
     let JR = parse input1
