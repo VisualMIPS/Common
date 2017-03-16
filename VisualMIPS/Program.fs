@@ -5,14 +5,16 @@ open Instructions
 open Parser
 open Tokeniser
 open MachineState
+open MachineCode
 open Executor
 
 module main =
     // Test Tokeniser and Parser
-    let input = tokenise "AND 1, 2, 3"
-    let AND = parse input
-    printfn "Instr: %A \n" AND
-    printInstr AND
+    let input = tokenise "ADDU 3, 4, 5"
+    let ADDU = parse input
+    printfn "Instr: %A \n" ADDU
+    printInstr ADDU
+    printfn "Code: %u" (convert ADDU)
     
     let input1 = tokenise "JR 1"
     let JR = parse input1

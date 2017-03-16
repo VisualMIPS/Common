@@ -22,7 +22,7 @@ module MachineState =
         }
 
     /// Gets value of specified Register
-    let getReg (reg: Register) (mach:MachineState) =
+    let getReg (reg: Register) (mach: MachineState) =
         Map.find reg mach.RegMap
     
     /// Gets value of High Register
@@ -34,26 +34,26 @@ module MachineState =
         mach.Lo
 
     /// Gets value of specified Memory location
-    let getMem (mem: Memory) (mach:MachineState) =
+    let getMem (mem: Memory) (mach: MachineState) =
         Map.find mem mach.MemMap
 
     /// Gets current State value
-    let getState (mach:MachineState) =
+    let getState (mach: MachineState) =
         mach.State
 
     /// Gets current PC value
-    let getPC (mach:MachineState) =
+    let getPC (mach: MachineState) =
         mach.pc
 
     /// Gets next PC value
-    let getNextPC (mach:MachineState) =
+    let getNextPC (mach: MachineState) =
         mach.pcNext
     
     /// Gets next, next PC value
-    let getNextNextPC (mach:MachineState) =
+    let getNextNextPC (mach: MachineState) =
         mach.pcNextNext
 
-    let advancePC (mach:MachineState) =
+    let advancePC (mach: MachineState) =
         let m = {mach with pc = mach.pcNext}
         let m2 = 
             match mach.pcNextNext with
@@ -62,11 +62,11 @@ module MachineState =
         {m2 with pcNextNext = None}
 
     /// Sets next, next PC value
-    let setNextNextPC (next:Word) (mach:MachineState) =
+    let setNextNextPC (next: Word) (mach: MachineState) =
         {mach with pcNextNext = Some next}
 
     /// Sets value into specified Register. If Register is 0, nothing is changed.
-    let setReg (reg: Register) (data: Word) (mach:MachineState) =
+    let setReg (reg: Register) (data: Word) (mach: MachineState) =
         if reg = Register(0) then mach  // If reg = 0, return unaltered mach as r0 is always 0.
         else
             let newRegMap = Map.add reg data mach.RegMap
@@ -84,18 +84,18 @@ module MachineState =
         newMach
     
     /// Sets value into specified Memory location
-    let setMem (mem: Memory) (data: Word) (mach:MachineState) =
+    let setMem (mem: Memory) (data: Word) (mach: MachineState) =
         let newMemMap = Map.add mem data mach.MemMap
         let newMach = {mach with MemMap = newMemMap}
         newMach
     
     /// Sets value into State (RunState)
-    let setState (state: RunState) (mach:MachineState) =
+    let setState (state: RunState) (mach: MachineState) =
         let newMach = {mach with State = state}
         newMach
 
     /// Prints entire Machine State
-    let printMachineState (mach:MachineState) =
+    let printMachineState (mach: MachineState) =
         printfn "Current Machine State:"
         printfn "PC: \t\t%A" mach.pc
         printfn "PCNext: \t%A" mach.pcNext

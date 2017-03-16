@@ -14,9 +14,14 @@
  Initialises Machine State at start of program
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.printState(VisualMIPS.MachineState.MachineState)">
+<member name="M:VisualMIPS.MachineState.printMachineState(VisualMIPS.MachineState.MachineState)">
 <summary>
  Prints entire Machine State
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.setState(VisualMIPS.MachineState.RunState,VisualMIPS.MachineState.MachineState)">
+<summary>
+ Sets value into State (RunState)
 </summary>
 </member>
 <member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.Types.Memory,VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
@@ -57,6 +62,11 @@
 <member name="M:VisualMIPS.MachineState.getPC(VisualMIPS.MachineState.MachineState)">
 <summary>
  Gets current PC value
+</summary>
+</member>
+<member name="M:VisualMIPS.MachineState.getState(VisualMIPS.MachineState.MachineState)">
+<summary>
+ Gets current State value
 </summary>
 </member>
 <member name="M:VisualMIPS.MachineState.getMem(VisualMIPS.Types.Memory,VisualMIPS.MachineState.MachineState)">

@@ -50,6 +50,7 @@
     <Compile Include="AssemblyInfo.fs" />
     <Compile Include="types.fs" />
     <Compile Include="datastruct.fs" />
+    <Compile Include="machinecode.fs" />
     <Compile Include="tokeniser.fs" />
     <Compile Include="parser.fs" />
     <Compile Include="r_type.fs" />
