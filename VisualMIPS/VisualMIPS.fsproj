@@ -53,6 +53,7 @@
     <Compile Include="tokeniser.fs" />
     <Compile Include="parser.fs" />
     <Compile Include="r_type.fs" />
+    <Compile Include="i_type.fs" />
     <Compile Include="instructer.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />

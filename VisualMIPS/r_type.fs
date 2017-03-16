@@ -32,12 +32,50 @@ module Rtypes =
             (outputSameRd , newmach)
 
 
-// left to do : DIV | DIVU | MULT | MULTU | JR | JALR | MTHI | MTHLO
+// left to do : | MULT | MULTU | JR | JALR | 
 
     let opDIV (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         match rT with
         | 0u -> mach //div by 0 -> nothing happens
-        | _ ->
-            
-            let newmach = mach |> setHi word |> setLo word 
-       
+        | _ -> // rS = q*rT + r 
+            let quotient = Word(uint32( int32(rS)/int32(rT) ))
+            let remainder = Word(uint32( int32(rS)%int32(rT) ))
+            let newmach = mach |> setHi remainder |> setLo quotient 
+            newmach
+        
+    let opDIVU (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
+        match rT with
+        | 0u -> mach 
+        | _ -> 
+            let quotient = Word( rS/rT )
+            let remainder = Word( rS%rT )
+            let newmach = mach |> setHi remainder |> setLo quotient 
+            newmach
+
+    let opMULT (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
+    // no overflow possible as long as Ben checks range in parser
+        let result = uint64( int64( int32( rS )) * int64( int32 ( rT ))) //may be able to simplify here
+        let upper = Word( uint32( result >>> 32 )) 
+        let lower = Word( uint32( result )) //selects the first 32 btis
+        let newmach = mach |> setHi upper |> setLo lower 
+        newmach
+
+    let opMULTU (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
+        let result = uint64(rS) * uint64(rT) 
+        let upper = Word( uint32( result >>> 32 )) 
+        let lower = Word( uint32( result )) //selects the first 32 btis
+        let newmach = mach |> setHi upper |> setLo lower 
+        newmach
+
+    let opJR (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
+        failwithf "Not implemented yet"
+
+    let opJALR (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
+        failwithf "Not implemented yet"
+
+    let opMTHI (mach: MachineState) (instr : Instruction) (rS) (Word rT) =
+        setHi rS mach
+    
+    let opMTLO (mach: MachineState) (instr : Instruction) (rS) (Word rT) =
+        setLo rS mach
+    

@@ -80,7 +80,7 @@ module main =
     |> setReg (Register 2) (Word 32u)
     |> executeInstruction AND // Result is R1=32u
     |> executeInstruction XOR // Result is R4=0u
-    |> printState
+    |> printMachineState
     |> ignore
 
     System.Console.ReadKey() |> ignore

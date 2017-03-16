@@ -6,6 +6,7 @@ module Executor =
     open Instructions
     open MachineState
     open Rtypes
+    open Itypes
 
     let processMultDiv (instr: Instruction)  (mach : MachineState)= failwith "Not Implemented"
 
@@ -69,32 +70,32 @@ module Executor =
         
 
     let processFullR (instr: Instruction) (mach : MachineState) =
-        let localMap = Map[(ADD,opADD);(SUB,opSUB);(DIV,opDIV);(DIVU,opDIVU);
-                        (MULT,opMULT);(MULTU,opMULTU);(JR,opJR);(JALR,opJALR);
-                        (MTHI,opMTHI);(MTHLO,opMTHLO)]
+        let localMap1 = Map[(ADD,opADD);(SUB,opSUB);(JALR,opJALR)] //can change rd
+        let localMap2 = Map[(DIV,opDIV);(DIVU,opDIVU);(MULT,opMULT);(MULTU,opMULTU);
+                        (JR,opJR);(MTHI,opMTHI);(MTLO,opMTLO)] //no need to change rd
         let rs = getReg instr.rs mach
         let rt = getReg instr.rt mach
-        let fn = Map.find instr.opcode localMap
-        // output dispatching
         let returnmach =
-            match instr.opcode with
-            | ADD | SUB | JALR -> //can change rd
-                let (output,newmach) = fn mach instr rs rt
+            match (Map.containsKey instr.opcode localMap1) with
+            | true ->
+                let fn1 = Map.find instr.opcode localMap1
+                let (output,newmach) = fn1 mach instr rs rt
                 setReg instr.rd output newmach 
-            | DIV | DIVU | MULT | MULTU | JR | MTHI | MTHLO -> //no need to change rd
-                let newmach = fn mach instr rs rt
+            | false ->
+                let fn2 = Map.find instr.opcode localMap2
+                let newmach = fn2 mach instr rs rt
                 newmach 
-            | _ -> failwith "opcode does not belong to processFullR functions"
-        returnmach
-
+        returnmach 
 
 
     // --------------- //
 
-    let opTypeMap = Map [([DIV; DIVU; MULT; MULTU],processMultDiv);
+    let opTypeMap = Map [
+                        ([ADDU; AND; OR; SRAV; SRLV; SLLV; SUBU; XOR; SLT; SLTU; MFHI; MFLO], processSimpleR);
+                        ([SRA; SRL; SLL], processShiftR);
+                        ([ADD; SUB; JALR; DIV; DIVU; MULT; MULTU; JR; MTHI; MTLO], processFullR);
+                        ([DIV; DIVU; MULT; MULTU],processMultDiv);
                         ([MFHI; MFLO; MTHI; MTLO],processHILO);
-                        ([AND; XOR; OR],processSimpleR);
-                        ([SRA],processShiftR)
                         ]
 
     let executeInstruction (instr : Instruction) (mach : MachineState) =

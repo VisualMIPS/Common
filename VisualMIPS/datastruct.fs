@@ -11,10 +11,10 @@ module MachineState =
         
     type MachineState = 
         { 
-        RegMap : Map<Register, Word>
+        RegMap : Map<Register, Word> //32 Registers
         Hi : Word
         Lo : Word
-        MemMap : Map<Memory, Word> 
+        MemMap : Map<Memory, Word> //4000 Memory 
         State : RunState
         pc : Word //The instruction currently running
         pcNext : Word //The address of the next instruction to run
