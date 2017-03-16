@@ -5,14 +5,16 @@ open Instructions
 open Parser
 open Tokeniser
 open MachineState
-open Executor
+open MachineCode
+//open Executor
 
 module main =
     // Test Tokeniser and Parser
-    let input = tokenise "AND 1, 2, 3"
-    let AND = parse input
-    printfn "Instr: %A \n" AND
-    printInstr AND
+    let input = tokenise "ADDU 3, 4, 5"
+    let ADDU = parse input
+    printfn "Instr: %A \n" ADDU
+    printInstr ADDU
+    printfn "Code: %u" (convert ADDU)
     
     let input1 = tokenise "JR 1"
     let JR = parse input1
@@ -78,9 +80,9 @@ module main =
     initialise
     |> setReg (Register 3) (Word 32u)
     |> setReg (Register 2) (Word 32u)
-    |> executeInstruction AND // Result is R1=32u
-    |> executeInstruction XOR // Result is R4=0u
-    |> printState
+    //|> executeInstruction AND // Result is R1=32u
+    //|> executeInstruction XOR // Result is R4=0u
+    |> printMachineState
     |> ignore
 
     System.Console.ReadKey() |> ignore

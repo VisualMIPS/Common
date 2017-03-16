@@ -52,12 +52,13 @@ module Instructions =
     let I_OMap = Map [("BEQ", BEQ);
                       ("BNE", BNE)]
 
-    let I_SOMap = Map [("BGEZ", BGEZ);
-                       ("BGEZAL", BGEZAL);
-                       ("BGTZ", BGTZ);
+    let I_SMap = Map [("BGEZ", BGEZ);
+                      ("BGEZAL", BGEZAL);
+                      ("BLTZAL", BLTZAL)]
+                       
+    let I_SOMap = Map [("BGTZ", BGTZ);
                        ("BLEZ", BLEZ);
                        ("BLTZ", BLTZ);
-                       ("BLTZAL", BLTZAL);
                        ("LUI", LUI)]
 
     let I_BOMap = Map [("LB", LB);
@@ -87,9 +88,7 @@ module Instructions =
                     ("MULT", MULT);
                     ("MULTU", MULTU);
                     ("MFHI", MFHI);
-                    ("MFLO", MFLO);
-                    ("MTHI", MTHI);
-                    ("MTLO", MTLO)]
+                    ("MFLO", MFLO)]
 
     let R_SMap = Map [("SRA", SRA);
                       ("SRL", SRL);
@@ -100,9 +99,76 @@ module Instructions =
                       ("SLLV", SLLV)]
 
     let R_JMap = Map [("JR", JR);
-                      ("JALR", JALR);]
+                      ("JALR", JALR);
+                      ("MTHI", MTHI);
+                      ("MTLO", MTLO)]
 
-    type Instr_Type = | I | J | R | I_O | I_SO | I_BO | R_V | R_S | R_J
+    // Maps with Instruction Opcode as key and MachineCode Opcode as value
+
+    let ICodeMap = Map [(ADDI,  0b001000);
+                        (ADDIU, 0b001001);
+                        (ANDI,  0b001100);
+                        (ORI,   0b001101);
+                        (XORI,  0b001110);
+                        (SLTI,  0b001010);
+                        (SLTIU, 0b001011)]
+
+    let I_OCodeMap = Map [(BEQ, 0b000100);
+                          (BNE, 0b000101)]
+
+    let I_SOCodeMap = Map [(BGEZ,   0b00001);
+                           (BGEZAL, 0b10001);
+                           (BLTZAL, 0b10000)]
+
+    let I_SCodeMap = Map  [(BGTZ,   0b000111);
+                           (BLEZ,   0b000110);
+                           (BLTZ,   0b000001);                           
+                           (LUI,    0b001111)]
+
+    let I_BOCodeMap = Map [(LB,     0b100000);
+                           (LBU,    0b100100);
+                           (LH,     0b100001);
+                           (LW,     0b100011);
+                           (LWL,    0b100010);
+                           (LWR,    0b100110);
+                           (SB,     0b101000);
+                           (SH,     0b101001);
+                           (SW,     0b101011)]
+
+    let JCodeMap = Map [(J,   0b10);
+                        (JAL, 0b11)]
+
+    let RCodeMap = Map [(ADD,   0b100000);
+                        (ADDU,  0b100001);
+                        (AND,   0b100100);
+                        (OR,    0b100101);
+                        (SUB,   0b100010);
+                        (SUBU,  0b100011);
+                        (XOR,   0b100110);
+                        (SLT,   0b101010);
+                        (SLTU,  0b101011);
+                        (DIV,   0b011010);
+                        (DIVU,  0b011011);
+                        (MULT,  0b011000);
+                        (MULTU, 0b011001);
+                        (MFHI,  0b010000);
+                        (MFLO,  0b010010)]
+                        
+    let R_SCodeMap = Map [(SRA,     0b000011);
+                          (SRL,     0b000010);
+                          (SLL,     0b000000)]
+
+    let R_VCodeMap = Map [(SRAV,    0b000111);
+                          (SRLV,    0b000110);
+                          (SLLV,    0b000100)]                    
+   
+                        
+    let R_JCodeMap = Map [(JR,      0b001000);
+                          (JALR,    0b001001);              
+                          (MTHI,    0b010001);
+                          (MTLO,    0b010011)]
+
+    type Instr_Type = | I | J | R | I_O | I_S | I_SO | I_BO | R_V | R_S | R_J
 
     type Instruction =
         {
@@ -115,4 +181,3 @@ module Instructions =
         immed : Half
         target : Targetval
         }
-

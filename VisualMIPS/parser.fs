@@ -36,7 +36,14 @@ module Parser =
         let immed = Half(uint16(iTokens.[3]))
         {opcode=opcode; instr_type = I_O; rs=r_s; rt=r_t; rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
 
-    /// Parse (Opcode rs, offset)
+    /// Parse (Opcode rs, offset) Same as I_SO
+    let parseI_S_Type (iTokens: string[]) =
+        let opcode = Map.find iTokens.[0] I_SMap
+        let r_s = Register(int(iTokens.[1]))
+        let immed = Half(uint16(iTokens.[2]))
+        {opcode=opcode; instr_type = I_S; rs=r_s; rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
+    
+    /// Parse (Opcode rs, offset) Same as I_S
     let parseI_SO_Type (iTokens: string[]) =
         let opcode = Map.find iTokens.[0] I_SOMap
         let r_s = Register(int(iTokens.[1]))
@@ -101,6 +108,7 @@ module Parser =
     let parse (tokens: string[]) =
         if Map.containsKey tokens.[0] IMap then parseI_Type tokens
         elif Map.containsKey tokens.[0] I_OMap then parseI_O_Type tokens
+        elif Map.containsKey tokens.[0] I_SMap then parseI_S_Type tokens
         elif Map.containsKey tokens.[0] I_SOMap then parseI_SO_Type tokens
         elif Map.containsKey tokens.[0] I_BOMap then parseI_BO_Type tokens
         elif Map.containsKey tokens.[0] JMap then parseJ_Type tokens
@@ -136,14 +144,15 @@ module Parser =
         printfn "Opcode: %A, rt: %A, rd: %A, shift: %A" instr.opcode instr.rt instr.rd instr.shift
 
     let printR_J_Type (instr: Instruction) =
-        if instr.opcode = JR then printfn "Opcode: %A, rs: %A" instr.opcode instr.rs
-        else printfn "Opcode: %A, rd: %A, rs: %A" instr.opcode instr.rd instr.rs
+        if instr.opcode = JALR then printfn "Opcode: %A, rd: %A, rs: %A" instr.opcode instr.rd instr.rs
+        else printfn "Opcode: %A, rs: %A" instr.opcode instr.rs
     
     /// Prints parsed Instruction for debugging
     let printInstr (instr: Instruction) =
         match instr with
         | x when instr.instr_type = I -> printI_Type x
         | x when instr.instr_type = I_O -> printI_O_Type x
+        | x when instr.instr_type = I_S -> printI_SO_Type x
         | x when instr.instr_type = I_SO -> printI_SO_Type x
         | x when instr.instr_type = I_BO -> printI_BO_Type x
         | x when instr.instr_type = J -> printJ_Type x
