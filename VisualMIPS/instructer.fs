@@ -61,17 +61,47 @@ module Executor =
             | true ->
                 let fn1 = Map.find instr.opcode localMap1
                 let (output,newmach) = fn1 mach instr rs rt
-                setReg instr.rd output newmach 
+                let newmach1 = setReg instr.rd output newmach 
+                newmach1
             | false ->
                 let fn2 = Map.find instr.opcode localMap2
-                let newmach = fn2 mach instr rs rt
-                newmach 
+                let newmach2 = fn2 mach instr rs rt
+                newmach2 
         returnmach 
     
     let processMultDiv (instr: Instruction)  (mach : MachineState)= failwith "Not Implemented"
 
     let processHILO (instr: Instruction) (mach : MachineState) = failwith "Not Implemented"
 
+    // I execution
+
+    let processSimpleI (instr: Instruction) (mach : MachineState) =
+        let rs = T.getValue(getReg instr.rs mach)
+        let rt = T.getValue(getReg instr.rt mach)
+        let immediateForAdd = uint32(T.getValue instr.immed) //pads with 16-bit of MSB's value
+        let immediateForRest = immediateForAdd &&& 65535u //pads with zeros regardless of MSB
+        //65535 is 00000000000000001111111111111111 in binary
+        let tmp = 
+             match instr.opcode with
+             | ADDIU -> rs + immediateForAdd
+             | ANDI -> rs &&& immediateForRest 
+             | ORI -> rs ||| immediateForRest
+             | XORI -> rs ^^^ immediateForRest
+             | LUI -> immediateForAdd <<< 16
+             | SLTI ->
+                match int32(rs) < int32(immediateForAdd) with
+                | true -> 1u 
+                | false -> 0u
+             | SLTIU ->
+                match rs < immediateForAdd with
+                | true -> 1u
+                | false -> 0u
+             | _ -> failwith "opcode does not belong to processSimpleI functions"
+        let output = Word(tmp)
+        let newmach = setReg instr.rt output mach
+        newmach
+
+    
     let processBranchI (instr: Instruction) (mach : MachineState) =
         let immed = (T.getValue instr.immed)
         let rs = T.getValue( getReg instr.rs mach )
@@ -87,23 +117,19 @@ module Executor =
                                 | BGTZ when rs >= 0u -> (true, false)
                                 //FIXME: Do the link commands always link? Spec seems to suggest that.
                                 | _ -> (false, false)
-        setNextNextPC (Word ((getNextPC mach |> T.getValue) + 4u*(uint32 immed))) //need to sign extend when converting to uint32
+        let newmach = setNextNextPC (Word ((getNextPC mach |> T.getValue) + 4u*(uint32 immed))) mach//need to sign extend when converting to uint32
+        newmach
 
-    // I execution
+    let processfullI (instr: Instruction) (mach : MachineState) =
+        let localMap = Map[(ADDI,opADDI)]
+        let rs = getReg instr.rs mach
+        let rt = getReg instr.rt mach
+        let immediate = int32(T.getValue instr.immed)
+        let fn = Map.find instr.opcode localMap
+        let (output,newmach) = fn mach instr rs rt
+        let newmach = setReg instr.rt output newmach
+        newmach
 
-    let processSimpleI (instr: Instruction) (mach : MachineState) =
-        let rs = T.getValue(getReg instr.rs mach)
-        let rt = T.getValue(getReg instr.rt mach)
-        let immediate = uint32(T.getValue instr.immed) //pads with 16-bit of MSB's value
-        let tmp = 
-             match instr.opcode with
-             | ADDIU -> rs + immediate //pad with MSB ????
-             | ANDI -> rs &&& immediate //pad with zeros
-             | ORI -> rs ||| immediate
-             | XORI -> rs ^^^ immediate
-             | _ -> failwith "opcode does not belong to processSimpleI functions"
-        let output = Word(tmp)
-        setReg instr.rt output mach
     // --------------- //
 
     // Dispatch execution
@@ -112,7 +138,9 @@ module Executor =
                         ([ADDU; AND; OR; SRAV; SRLV; SLLV; SUBU; XOR; SLT; SLTU; MFHI; MFLO], processSimpleR);
                         ([SRA; SRL; SLL], processShiftR);
                         ([ADD; SUB; JALR; DIV; DIVU; MULT; MULTU; JR; MTHI; MTLO], processFullR);
-                        ([ADDIU; ANDI; ORI; XORI],processSimpleI);
+                        ([ADDIU; ANDI; ORI; XORI; LUI; SLTI; SLTIU],processSimpleI);
+                        ([BGEZ; BGEZAL; BEQ; BNE; BLEZ; BLTZ; BLTZAL; BGTZ], processBranchI);
+                        ([ADDI], processfullI);
                         ([DIV; DIVU; MULT; MULTU],processMultDiv);
                         ([MFHI; MFLO; MTHI; MTLO],processHILO);
                         ]

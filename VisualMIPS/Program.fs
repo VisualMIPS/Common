@@ -88,5 +88,6 @@ module main =
     System.Console.ReadKey() |> ignore
     
     //for testing, remember to test invalid inputs 
-    // Need add routine : checks MachineState.State != RuntimeErr or SyntaxErr
+    // To do list : checks MachineState.State != RuntimeErr or SyntaxErr
+    // To do list : give each isntruction an address in memory in order to implement JR instruction
     

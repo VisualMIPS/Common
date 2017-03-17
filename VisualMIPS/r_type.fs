@@ -18,7 +18,7 @@ module Rtypes =
             (output, mach)
         with e -> //overflow occured
             let outputSameRd = getReg instr.rd mach
-            let newmach = {mach with State = RunTimeErr "Overflow on ADD"}
+            let newmach = setState (RunTimeErr "Overflow on ADD") mach
             (outputSameRd , newmach)
 
     let opSUB (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
@@ -32,7 +32,7 @@ module Rtypes =
             (outputSameRd , newmach)
 
 
-// left to do : | MULT | MULTU | JR | JALR | 
+// left to do :  JR | JALR | 
 
     let opDIV (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         match rT with
