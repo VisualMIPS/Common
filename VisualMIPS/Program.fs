@@ -9,9 +9,15 @@ open MachineCode
 open Executor
 
 module main =
+
     // Test Tokeniser and Parser
-    let input = tokenise "AND 3, 4, 5"
-    let AND = parse input
+    let input = tokenise "AND 32, 4, 5"
+    let AND = 
+        try
+            parse input
+        with
+            | msg -> fail (string msg) 1
+
     printfn "Instr: %A \n" AND
     printInstr AND
     printfn "Code: %u" (convert AND)
