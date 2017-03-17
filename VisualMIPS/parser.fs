@@ -26,6 +26,10 @@ module Parser =
                                     | x when x <= 32767 && x >= -32768 -> true
                                     | _ -> false
 
+    let targetWithinRange (target: int) =   match target with
+                                            | x when x <= 67108863 && x >= 0 -> true
+                                            | _ -> false
+    
     // Need parse function to take in tokens and output instruction type
 
     /// Parse (Opcode rt, rs, immediate)
@@ -43,65 +47,133 @@ module Parser =
         if not (isNum iTokens.[3]) then failwithf "imm: %A is invalid. Please use integers only." iTokens.[3]
         if not (immWithinRange (int iTokens.[3])) then failwithf "imm: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[3])
         let immed = Half(uint16(iTokens.[3]))
+
         {opcode=opcode; instr_type = I; rs=r_s; rt=r_t; rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
 
     /// Parse (Opcode rs, rt, offset)
     let parseI_O_Type (iTokens: string[]) =
         let opcode = Map.find iTokens.[0] I_OMap
-        let r_s = Register(int(iTokens.[1]))
-        let r_t = Register(int(iTokens.[2]))
-        let immed = Half(uint16(iTokens.[3]))
+
+        if not (isNum iTokens.[1]) then failwithf "rs: %A is invalid. Please use integers only." iTokens.[1]
+        if not (regWithinRange (int iTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
+        let r_s = iTokens.[1] |> int |> Register
+
+        if not (isNum iTokens.[2]) then failwithf "rt: %A is invalid. Please use integers only." iTokens.[2]
+        if not (regWithinRange (int iTokens.[2])) then failwithf "rt: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[2])
+        let r_t = iTokens.[2] |> int |> Register
+
+        if not (isNum iTokens.[3]) then failwithf "offset: %A is invalid. Please use integers only." iTokens.[3]
+        if not (immWithinRange (int iTokens.[3])) then failwithf "offset: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[3])
+        let immed = iTokens.[3] |> uint16 |> Half
+
         {opcode=opcode; instr_type = I_O; rs=r_s; rt=r_t; rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
 
     /// Parse (Opcode rs, offset) Same as I_SO
     let parseI_S_Type (iTokens: string[]) =
         let opcode = Map.find iTokens.[0] I_SMap
-        let r_s = Register(int(iTokens.[1]))
-        let immed = Half(uint16(iTokens.[2]))
+        
+        if not (isNum iTokens.[1]) then failwithf "rs: %A is invalid. Please use integers only." iTokens.[1]
+        if not (regWithinRange (int iTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
+        let r_s = iTokens.[1] |> int |> Register
+
+        if not (isNum iTokens.[2]) then failwithf "offset: %A is invalid. Please use integers only." iTokens.[2]
+        if not (immWithinRange (int iTokens.[2])) then failwithf "offset: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[2])
+        let immed = iTokens.[2] |> uint16 |> Half
+
         {opcode=opcode; instr_type = I_S; rs=r_s; rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
     
     /// Parse (Opcode rs, offset) Same as I_S
     let parseI_SO_Type (iTokens: string[]) =
         let opcode = Map.find iTokens.[0] I_SOMap
-        let r_s = Register(int(iTokens.[1]))
-        let immed = Half(uint16(iTokens.[2]))
+        
+        if not (isNum iTokens.[1]) then failwithf "rs: %A is invalid. Please use integers only." iTokens.[1]
+        if not (regWithinRange (int iTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
+        let r_s = iTokens.[1] |> int |> Register
+
+        if not (isNum iTokens.[2]) then failwithf "offset: %A is invalid. Please use integers only." iTokens.[2]
+        if not (immWithinRange (int iTokens.[2])) then failwithf "offset: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[2])
+        let immed = iTokens.[2] |> uint16 |> Half
+
         {opcode=opcode; instr_type = I_SO; rs=r_s; rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
     
     /// Parse (Opcode rt, offset(rs))
     let parseI_BO_Type (iTokens: string[]) =
         let opcode = Map.find iTokens.[0] I_BOMap
-        let r_t = Register(int(iTokens.[1]))
-        let immed = Half(uint16(iTokens.[2]))
-        let r_s = Register(int(iTokens.[3]))
+        
+        if not (isNum iTokens.[1]) then failwithf "rt: %A is invalid. Please use integers only." iTokens.[1]
+        if not (regWithinRange (int iTokens.[1])) then failwithf "rt: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
+        let r_t = iTokens.[1] |> int |> Register
+
+        if not (isNum iTokens.[2]) then failwithf "offset: %A is invalid. Please use integers only." iTokens.[2]
+        if not (immWithinRange (int iTokens.[2])) then failwithf "offset: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[2])
+        let immed = iTokens.[2] |> uint16 |> Half
+
+        if not (isNum iTokens.[3]) then failwithf "rs: %A is invalid. Please use integers only." iTokens.[3]
+        if not (regWithinRange (int iTokens.[3])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[3])
+        let r_s = iTokens.[3] |> int |> Register
+
         {opcode=opcode; instr_type = I_BO; rs=r_s; rt=r_t; rd=Register(0); shift=Shiftval(0uy); immed=immed; target=Targetval(0u)}
 
     /// Parse (Opcode target)
     let parseJ_Type (jTokens: string[]) =            
         let opcode = Map.find jTokens.[0] JMap
+
+        if not (isNum jTokens.[1]) then failwithf "target: %A is invalid. Please use integers only." jTokens.[1]
+        if not (targetWithinRange (int jTokens.[1])) then failwithf "target: %A is not within range. Accepted values between 0 and 67108863." (int jTokens.[1])
         let target = Targetval(uint32(jTokens.[1]))
+
         {opcode=opcode; instr_type = J; rs=Register(0); rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=Half(0us); target=target}
 
     /// Parse (Opcode rd, rs, rt)
     let parseR_Type (rTokens: string[]) =            
         let opcode = Map.find rTokens.[0] RMap
-        let r_d = Register(int(rTokens.[1]))
-        let r_s = Register(int(rTokens.[2]))
-        let r_t = Register(int(rTokens.[3]))
+
+        if not (isNum rTokens.[1]) then failwithf "rd: %A is invalid. Please use integers only." rTokens.[1]
+        if not (regWithinRange (int rTokens.[1])) then failwithf "rd: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[1])
+        let r_d = rTokens.[1] |> int |> Register
+
+        if not (isNum rTokens.[2]) then failwithf "rs: %A is invalid. Please use integers only." rTokens.[2]
+        if not (regWithinRange (int rTokens.[2])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[2])
+        let r_s = rTokens.[2] |> int |> Register
+
+        if not (isNum rTokens.[3]) then failwithf "rt: %A is invalid. Please use integers only." rTokens.[3]
+        if not (regWithinRange (int rTokens.[3])) then failwithf "rt: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[3])
+        let r_t = rTokens.[3] |> int |> Register
+
         {opcode=opcode; instr_type = R; rs=r_s; rt=r_t; rd=r_d; shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
     
     /// Parse (Opcode rd, rt, rs)
     let parseR_V_Type (rTokens: string[]) =            
         let opcode = Map.find rTokens.[0] R_VMap
-        let r_d = Register(int(rTokens.[1]))
-        let r_t = Register(int(rTokens.[2]))
-        let r_s = Register(int(rTokens.[3]))
+
+        if not (isNum rTokens.[1]) then failwithf "rd: %A is invalid. Please use integers only." rTokens.[1]
+        if not (regWithinRange (int rTokens.[1])) then failwithf "rd: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[1])
+        let r_d = rTokens.[1] |> int |> Register
+
+        if not (isNum rTokens.[2]) then failwithf "rt: %A is invalid. Please use integers only." rTokens.[2]
+        if not (regWithinRange (int rTokens.[2])) then failwithf "rt: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[2])
+        let r_t = rTokens.[2] |> int |> Register
+
+        if not (isNum rTokens.[3]) then failwithf "rs: %A is invalid. Please use integers only." rTokens.[3]
+        if not (regWithinRange (int rTokens.[3])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[3])
+        let r_s = rTokens.[3] |> int |> Register
+        
         {opcode=opcode; instr_type = R_V; rs=r_s; rt=r_t; rd=r_d; shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
 
     /// Parse (Opcode rd, rt, shift)
     let parseR_S_Type (rTokens: string[]) =            
         let opcode = Map.find rTokens.[0] R_SMap
-        let r_d = Register(int(rTokens.[1]))
-        let r_t = Register(int(rTokens.[2]))
+
+        if not (isNum rTokens.[1]) then failwithf "rd: %A is invalid. Please use integers only." rTokens.[1]
+        if not (regWithinRange (int rTokens.[1])) then failwithf "rd: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[1])
+        let r_d = rTokens.[1] |> int |> Register
+
+        if not (isNum rTokens.[2]) then failwithf "rt: %A is invalid. Please use integers only." rTokens.[2]
+        if not (regWithinRange (int rTokens.[2])) then failwithf "rt: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[2])
+        let r_t = rTokens.[2] |> int |> Register
+
+        if not (isNum rTokens.[3]) then failwithf "shift: %A is invalid. Please use integers only." rTokens.[3]
+        if not (regWithinRange (int rTokens.[3])) then failwithf "shift: %A is not within range. Accepted shift values between 0 and 31." (int rTokens.[3])
         let shift = Shiftval(byte(rTokens.[3]))
         {opcode=opcode; instr_type = R_S; rs=Register(0); rt=r_t; rd=r_d; shift=shift; immed=Half(0us); target=Targetval(0u)}
 
@@ -110,15 +182,27 @@ module Parser =
         let opcode = Map.find rTokens.[0] R_JMap
         if opcode = JALR then
             if rTokens.Length = 3 then
-                let r_d = Register(int(rTokens.[1]))
-                let r_s = Register(int(rTokens.[2]))
+                if not (isNum rTokens.[1]) then failwithf "rd: %A is invalid. Please use integers only." rTokens.[1]
+                if not (regWithinRange (int rTokens.[1])) then failwithf "rd: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[1])
+                let r_d = rTokens.[1] |> int |> Register
+
+                if not (isNum rTokens.[2]) then failwithf "rs: %A is invalid. Please use integers only." rTokens.[2]
+                if not (regWithinRange (int rTokens.[2])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[2])
+                let r_s = rTokens.[2] |> int |> Register
+
                 {opcode=opcode; instr_type = R_J; rs=r_s; rt=Register(0); rd=r_d; shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
             else
                 let r_d = Register(31)
-                let r_s = Register(int(rTokens.[1]))
+
+                if not (isNum rTokens.[1]) then failwithf "rs: %A is invalid. Please use integers only." rTokens.[1]
+                if not (regWithinRange (int rTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[1])
+                let r_s = rTokens.[1] |> int |> Register
+
                 {opcode=opcode; instr_type = R_J; rs=r_s; rt=Register(0); rd=r_d; shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
         else
-            let r_s = Register(int(rTokens.[1]))
+            if not (isNum rTokens.[1]) then failwithf "rs: %A is invalid. Please use integers only." rTokens.[1]
+            if not (regWithinRange (int rTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int rTokens.[1])
+            let r_s = rTokens.[1] |> int |> Register
             {opcode=opcode; instr_type = R_J; rs=r_s; rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
     
     /// Parses Token into Instruction
