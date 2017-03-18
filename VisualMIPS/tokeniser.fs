@@ -6,7 +6,7 @@ module Tokeniser =
     let tokenise (s: string) = 
         Array.filter ((<>) "") (s.Split(' ',',','(',')','\t','\n','\r','\f'))
 
-    /// Splits large string into lines
+    /// Splits large string into lines NOT NEEDED
     let split (input: string) =
         Array.filter ((<>) "") (input.Split('\n','\r','\f'))
 

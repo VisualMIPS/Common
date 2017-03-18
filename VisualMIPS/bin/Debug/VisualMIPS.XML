@@ -156,7 +156,7 @@
 </member>
 <member name="M:VisualMIPS.Tokeniser.split(System.String)">
 <summary>
- Splits large string into lines
+ Splits large string into lines NOT NEEDED
 </summary>
 </member>
 <member name="M:VisualMIPS.Tokeniser.tokenise(System.String)">

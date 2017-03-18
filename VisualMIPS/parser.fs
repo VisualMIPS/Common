@@ -262,3 +262,11 @@ module Parser =
         | x when instr.instr_type = R_S -> printR_S_Type x
         | x when instr.instr_type = R_J -> printR_J_Type x
         | _ -> failwith "Invalid Instruction!"
+
+    /// Prints Parser Error message before ending program
+    let fail (msg: string) (line: int) =
+        let msgs = msg.Split('\n')
+        let found = msgs.[0].IndexOf(": ");
+        let message = msgs.[0].Substring(found+2)
+        printfn "Line %i: %s" line message
+        failwith "Parser Error!" // Replace with whatever should come up in JS Console
