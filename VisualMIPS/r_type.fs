@@ -11,22 +11,28 @@ module Rtypes =
 
      //fullR functions
 
+     //fullR functions
+
     let opADD (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
-        let (+.) x y = Checked.(+) x y
-        try
-            let output = Word ( uint32( int32(rS) +. int32(rT) ) )
+        let output32 =  int64( int32(rS) + int32(rT) )
+        let output64 =  int64(rS) + int64(rT)
+        match output32=output64 with
+        | true -> 
+            let output = Word( rS + rT )
             (output, mach)
-        with e -> //overflow occured
+        | false -> //overflow occured
             let outputSameRd = getReg instr.rd mach
             let newmach = setState (RunTimeErr "Overflow on ADD") mach
             (outputSameRd , newmach)
-
+    
     let opSUB (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
-        let (-.) x y = Checked.(-) x y
-        try
-            let output = Word ( uint32( int32(rS) -. int32(rT) ) )
+        let output32 =  int64( int32(rS) - int32(rT) )
+        let output64 =  int64(rS) - int64(rT)
+        match output32=output64 with
+        | true -> 
+            let output = Word( rS - rT )
             (output, mach)
-        with e -> 
+        | false -> //overflow occured
             let outputSameRd = getReg instr.rd mach
             let newmach = setState (RunTimeErr "Overflow on SUB") mach
             (outputSameRd , newmach)

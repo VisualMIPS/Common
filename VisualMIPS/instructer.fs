@@ -123,10 +123,9 @@ module Executor =
     let processfullI (instr: Instruction) (mach : MachineState) =
         let localMap = Map[(ADDI,opADDI)]
         let rs = getReg instr.rs mach
-        let rt = getReg instr.rt mach
-        let immediate = int32(T.getValue instr.immed)
+        let immediate = instr.immed
         let fn = Map.find instr.opcode localMap
-        let (output,newmach) = fn mach instr rs rt
+        let (output,newmach) = fn mach instr rs immediate
         let newmach = setReg instr.rt output newmach
         newmach
 

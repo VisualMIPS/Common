@@ -8,13 +8,14 @@ module Itypes =
 
     //fullI functions
 
-    let opADDI (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
-        let immediate = int32(T.getValue instr.immed)
-        let (+.) x y = Checked.(+) x y
-        try
-            let out = Word( uint32( int32(rS) +. immediate ))
-            (out, mach)
-        with e ->
-            let outputSameRt = getReg instr.rt mach
-            let chgmach = setState (RunTimeErr "Overflow on ADDI") mach
-            (outputSameRt , chgmach)
+    let opADDI (mach: MachineState) (instr : Instruction) (Word rS) (Half immediate) =
+        let output32 =  int64( int32(rS) + int32(immediate) )
+        let output64 =  int64(rS) + int64(immediate)
+        match output32=output64 with
+        | true -> 
+            let output = Word( rS + uint32(immediate) )
+            (output, mach)
+        | false -> //overflow occured
+            let outputSameRd = getReg instr.rd mach
+            let newmach = setState (RunTimeErr "Overflow on ADD") mach
+            (outputSameRd , newmach)
