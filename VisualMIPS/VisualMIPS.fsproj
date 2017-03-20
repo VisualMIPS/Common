@@ -57,7 +57,7 @@
     <Compile Include="i_type.fs" />
     <Compile Include="j_type.fs" />
     <Compile Include="instructer.fs" />
-    <Compile Include=“testing.fs" />
+    <Compile Include="testing.fs" />
     <Compile Include="Program.fs" />
     <None Include="App.config" />
     <Content Include="packages.config" />
