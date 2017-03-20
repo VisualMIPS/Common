@@ -22,8 +22,8 @@ module Rtypes =
             (output, mach)
         | false -> //overflow occured
             let outputSameRd = getReg instr.rd mach
-            let newmach = setState (RunTimeErr "Overflow on ADD") mach
-            (outputSameRd , newmach)
+            let newMach = setState (RunTimeErr "Overflow on ADD") mach
+            (outputSameRd , newMach)
     
     let opSUB (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         let output32 =  int64( int32(rS) - int32(rT) )
@@ -34,8 +34,8 @@ module Rtypes =
             (output, mach)
         | false -> //overflow occured
             let outputSameRd = getReg instr.rd mach
-            let newmach = setState (RunTimeErr "Overflow on SUB") mach
-            (outputSameRd , newmach)
+            let newMach = setState (RunTimeErr "Overflow on SUB") mach
+            (outputSameRd , newMach)
 
 
 // left to do :  JR | JALR | 
@@ -46,8 +46,8 @@ module Rtypes =
         | _ -> // rS = q*rT + r 
             let quotient = Word(uint32( int32(rS)/int32(rT) ))
             let remainder = Word(uint32( int32(rS)%int32(rT) ))
-            let newmach = mach |> setHi remainder |> setLo quotient 
-            newmach
+            let newMach = mach |> setHi remainder |> setLo quotient 
+            newMach
         
     let opDIVU (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         match rT with
@@ -55,23 +55,23 @@ module Rtypes =
         | _ -> 
             let quotient = Word( rS/rT )
             let remainder = Word( rS%rT )
-            let newmach = mach |> setHi remainder |> setLo quotient 
-            newmach
+            let newMach = mach |> setHi remainder |> setLo quotient 
+            newMach
 
     let opMULT (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
     // no overflow possible as long as Ben checks range in parser
         let result = uint64( int64( int32( rS )) * int64( int32 ( rT ))) //may be able to simplify here
         let upper = Word( uint32( result >>> 32 )) 
         let lower = Word( uint32( result )) //selects the first 32 btis
-        let newmach = mach |> setHi upper |> setLo lower 
-        newmach
+        let newMach = mach |> setHi upper |> setLo lower 
+        newMach
 
     let opMULTU (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         let result = uint64(rS) * uint64(rT) 
         let upper = Word( uint32( result >>> 32 )) 
         let lower = Word( uint32( result )) //selects the first 32 btis
-        let newmach = mach |> setHi upper |> setLo lower 
-        newmach
+        let newMach = mach |> setHi upper |> setLo lower 
+        newMach
 
     let opJR (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         failwithf "Not implemented yet"

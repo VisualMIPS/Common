@@ -11,7 +11,7 @@ module Types =
     type Byte = Byte of byte
 
     type Register = Register of int
-    type Memory = Memory of int
+    type Memory = Memory of uint32
     type Shiftval = Shiftval of byte
     type Targetval = Targetval of uint32
 
@@ -35,7 +35,7 @@ module Instructions =
 
     type Opcode = | ADDI | ADDIU | ANDI | ORI | XORI 
                     | BEQ | BGEZ | BGEZAL | BGTZ | BLEZ | BLTZ | BLTZAL 
-                    | BNE | LB | LBU | LH | LW | LWL | LWR | SB | SH 
+                    | BNE | LB | LBU | LH | LHU| LW | LWL | LWR | SB | SH 
                     | SW | LUI | SLTI | SLTIU | J | JAL | ADD | ADDU | AND | OR | SRA 
                     | SRAV | SRL | SRLV | SLL | SLLV | SUB | SUBU 
                     | XOR | SLT | SLTU | DIV | DIVU | MULT | MULTU 
@@ -64,6 +64,7 @@ module Instructions =
     let I_BOMap = Map [("LB", LB);
                        ("LBU", LBU);
                        ("LH", LH);
+                       ("LHU", LHU);
                        ("LW", LW);
                        ("LWL", LWL);
                        ("LWR", LWR);
@@ -128,6 +129,7 @@ module Instructions =
     let I_BOCodeMap = Map [(LB,     0b100000);
                            (LBU,    0b100100);
                            (LH,     0b100001);
+                           (LHU,    0b100101);
                            (LW,     0b100011);
                            (LWL,    0b100010);
                            (LWR,    0b100110);
@@ -168,7 +170,7 @@ module Instructions =
                           (MTHI,    0b010001);
                           (MTLO,    0b010011)]
 
-    type Instr_Type = | I | J | R | I_O | I_S | I_SO | I_BO | R_V | R_S | R_J
+    type Instr_Type = | I | JJ | R | I_O | I_S | I_SO | I_BO | R_V | R_S | R_J
 
     type Instruction =
         {

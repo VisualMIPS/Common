@@ -7,7 +7,11 @@ module Executor =
     open MachineState
     open Rtypes
     open Itypes
+    open Jtypes
 
+    //Note : 
+    // uint32 sign extends if it converts a int8/16, does not sign extend with uints
+    // difference between uint32 and int32 is how the systems interprets the MSB if it is a 1 in a comparison for eg
 
     // R execution
     let processSimpleR (instr: Instruction) (mach : MachineState) =
@@ -56,52 +60,47 @@ module Executor =
                         (JR,opJR);(MTHI,opMTHI);(MTLO,opMTLO)] //no need to change rd
         let rs = getReg instr.rs mach
         let rt = getReg instr.rt mach
-        let returnmach =
+        let returnMach =
             match (Map.containsKey instr.opcode localMap1) with
             | true ->
                 let fn1 = Map.find instr.opcode localMap1
-                let (output,newmach) = fn1 mach instr rs rt
-                let newmach1 = setReg instr.rd output newmach 
-                newmach1
+                let (output,newMach) = fn1 mach instr rs rt
+                let newMach1 = setReg instr.rd output newMach 
+                newMach1
             | false ->
                 let fn2 = Map.find instr.opcode localMap2
-                let newmach2 = fn2 mach instr rs rt
-                newmach2 
-        returnmach 
-    
-    let processMultDiv (instr: Instruction)  (mach : MachineState)= failwith "Not Implemented"
+                let newMach2 = fn2 mach instr rs rt
+                newMach2 
+        returnMach 
 
-    let processHILO (instr: Instruction) (mach : MachineState) = failwith "Not Implemented"
 
     // I execution
 
     let processSimpleI (instr: Instruction) (mach : MachineState) =
         let rs = T.getValue(getReg instr.rs mach)
         let rt = T.getValue(getReg instr.rt mach)
-        let immediateForAdd = uint32(T.getValue instr.immed) //pads with 16-bit of MSB's value
-        let immediateForRest = immediateForAdd &&& 65535u //pads with zeros regardless of MSB
-        //65535 is 00000000000000001111111111111111 in binary
+        let immediateUnsigned = uint32(T.getValue instr.immed) //pads with 16-bit of zeros
+        let immediateSigned = int32( int16( T.getValue instr.immed))
         let tmp = 
              match instr.opcode with
-             | ADDIU -> rs + immediateForAdd
-             | ANDI -> rs &&& immediateForRest 
-             | ORI -> rs ||| immediateForRest
-             | XORI -> rs ^^^ immediateForRest
-             | LUI -> immediateForAdd <<< 16
+             | ADDIU -> rs + immediateUnsigned 
+             | ANDI -> rs &&& immediateUnsigned
+             | ORI -> rs ||| immediateUnsigned
+             | XORI -> rs ^^^ immediateUnsigned
+             | LUI -> immediateUnsigned <<< 16
              | SLTI ->
-                match int32(rs) < int32(immediateForAdd) with
+                match int32(rs) < immediateSigned with
                 | true -> 1u 
                 | false -> 0u
              | SLTIU ->
-                match rs < immediateForAdd with
+                match rs < immediateUnsigned with
                 | true -> 1u
                 | false -> 0u
              | _ -> failwith "opcode does not belong to processSimpleI functions"
         let output = Word(tmp)
-        let newmach = setReg instr.rt output mach
-        newmach
+        let newMach = setReg instr.rt output mach
+        newMach
 
-    
     let processBranchI (instr: Instruction) (mach : MachineState) =
         let immed = (T.getValue instr.immed)
         let rs = T.getValue( getReg instr.rs mach )
@@ -117,17 +116,38 @@ module Executor =
                                 | BGTZ when rs >= 0u -> (true, false)
                                 //FIXME: Do the link commands always link? Spec seems to suggest that.
                                 | _ -> (false, false)
-        let newmach = setNextNextPC (Word ((getNextPC mach |> T.getValue) + 4u*(uint32 immed))) mach//need to sign extend when converting to uint32
-        newmach
+        let newMach = setNextNextPC (Word ((getNextPC mach |> T.getValue) + 4u*(uint32 immed))) mach//need to sign extend when converting to uint32
+        newMach
 
-    let processfullI (instr: Instruction) (mach : MachineState) =
+    let processFullI (instr: Instruction) (mach : MachineState) =
         let localMap = Map[(ADDI,opADDI)]
         let rs = getReg instr.rs mach
         let immediate = instr.immed
         let fn = Map.find instr.opcode localMap
-        let (output,newmach) = fn mach instr rs immediate
-        let newmach = setReg instr.rt output newmach
-        newmach
+        let (output,newMach) = fn mach instr rs immediate
+        let returnMach = setReg instr.rt output newMach
+        returnMach
+
+    let processMemI (instr: Instruction) (mach : MachineState) =
+        let localMap = Map[(LB,opLB);(LBU,opLBU);(LH,opLH);(LHU,opLHU);(LW,opLW);
+                            (LWL,opLWL);(LWR,opLWR);(SB,opSB);(SH,opSH);(SW,opSW)]
+        let rt = getReg instr.rt mach
+        let myBase = getReg instr.rs mach // 'base' used by F# for name of base class object
+        let offset = instr.immed
+        let fn = Map.find instr.opcode localMap
+        let newMach = fn mach instr rt myBase offset
+        newMach
+    
+    
+    // J execution
+
+    let processFullJ (instr: Instruction) (mach : MachineState) =
+        let localMap = Map[(J,opJ);(JAL,opJAL)]
+        let target = instr.target
+        let fn = Map.find instr.opcode localMap
+        let newMach = fn mach instr target
+        newMach
+
 
     // --------------- //
 
@@ -139,9 +159,9 @@ module Executor =
                         ([ADD; SUB; JALR; DIV; DIVU; MULT; MULTU; JR; MTHI; MTLO], processFullR);
                         ([ADDIU; ANDI; ORI; XORI; LUI; SLTI; SLTIU],processSimpleI);
                         ([BGEZ; BGEZAL; BEQ; BNE; BLEZ; BLTZ; BLTZAL; BGTZ], processBranchI);
-                        ([ADDI], processfullI);
-                        ([DIV; DIVU; MULT; MULTU],processMultDiv);
-                        ([MFHI; MFLO; MTHI; MTLO],processHILO);
+                        ([ADDI], processFullI);
+                        ([LB; LBU; LH; LHU; LW; LWL; LWR; SB; SH; SW], processMemI);
+                        ([J;JAL], processFullJ);
                         ]
 
     let executeInstruction (instr : Instruction) (mach : MachineState) =

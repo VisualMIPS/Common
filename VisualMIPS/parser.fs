@@ -122,7 +122,7 @@ module Parser =
         if not (targetWithinRange (int jTokens.[1])) then failwithf "target: %A is not within range. Accepted values between 0 and 67108863." (int jTokens.[1])
         let target = Targetval(uint32(jTokens.[1]))
 
-        {opcode=opcode; instr_type = J; rs=Register(0); rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=Half(0us); target=target}
+        {opcode=opcode; instr_type = JJ; rs=Register(0); rt=Register(0); rd=Register(0); shift=Shiftval(0uy); immed=Half(0us); target=target}
 
     /// Parse (Opcode rd, rs, rt)
     let parseR_Type (rTokens: string[]) =            
@@ -256,7 +256,7 @@ module Parser =
         | x when instr.instr_type = I_S -> printI_SO_Type x
         | x when instr.instr_type = I_SO -> printI_SO_Type x
         | x when instr.instr_type = I_BO -> printI_BO_Type x
-        | x when instr.instr_type = J -> printJ_Type x
+        | x when instr.instr_type = JJ -> printJ_Type x
         | x when instr.instr_type = R -> printR_Type x
         | x when instr.instr_type = R_V -> printR_V_Type x
         | x when instr.instr_type = R_S -> printR_S_Type x

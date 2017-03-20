@@ -14,7 +14,7 @@ module MachineState =
         RegMap : Map<Register, Word> //32 Registers
         Hi : Word
         Lo : Word
-        MemMap : Map<Memory, Word> //4000 Memory 
+        MemMap : Map<Memory, Byte> // 4096 memory address although Memory is uint32
         State : RunState
         pc : Word //The instruction currently running
         pcNext : Word //The address of the next instruction to run
@@ -84,7 +84,7 @@ module MachineState =
         newMach
     
     /// Sets value into specified Memory location
-    let setMem (mem: Memory) (data: Word) (mach: MachineState) =
+    let setMem (mem: Memory) (data: Byte) (mach: MachineState) =
         let newMemMap = Map.add mem data mach.MemMap
         let newMach = {mach with MemMap = newMemMap}
         newMach
