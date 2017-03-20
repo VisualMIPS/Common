@@ -167,4 +167,4 @@ module Executor =
     let executeInstruction (instr : Instruction) (mach : MachineState) =
         let key = Map.findKey (fun x _ -> List.contains instr.opcode x) opTypeMap //Could be slightly simpler with a map.findWith style
         let fn = Map.find key opTypeMap
-        fn instr mach
+        mach |> fn instr |> advancePC

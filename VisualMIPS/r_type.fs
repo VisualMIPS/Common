@@ -74,7 +74,15 @@ module Rtypes =
         newMach
 
     let opJR (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
-        failwithf "Not implemented yet"
+        let returnMach =
+            match ((rS &&& 3u) = 0u) with
+            | true ->
+                setNextNextPC (Word(rS)) mach
+            | false -> 
+                setState (RunTimeErr "Address Error on JR") mach
+        returnMach
+        // execute isntruction following the jump in the branch delay slot before jumping
+       
 
     let opJALR (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         failwithf "Not implemented yet"
