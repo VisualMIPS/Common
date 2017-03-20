@@ -1,0 +1,12 @@
+/doc/html
+/doc/latex
+
+**.o
+**.out
+**.swp
+**.dSYM
+src/fyq14/test_mips
+src/fyq14/unit_test_mips
+
+fragments/run_addu
+fragments/run_fibonacci

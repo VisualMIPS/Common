@@ -1,0 +1,23 @@
+#!/usr/bin/perl
+
+my @classes = (
+    "NotImplemented",
+    "InvalidArgument",
+    "InvalidHandle",
+    "FileReadError",
+    "FileWriteError",
+    "BreakException",
+    "InvalidAddress",
+    "InvalidAlignment",
+    "AccessViolation",
+    "InvalidInstruction",
+    "ArimethicOverflow",
+    "InternalError",
+    "UnkownError"
+);
+
+foreach my $class (@classes) {
+    print "class $class", "Exception : public Exception {
+    const char * to_c_str() const; 
+};", "\n\n";
+}

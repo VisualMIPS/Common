@@ -1,0 +1,66 @@
+## RInstructions
+
+-- Populated
+
+ADDU
+SUBU
+OR
+XOR
+AND
+ADD
+SUB
+SLT
+SLTU
+MFHI
+MFLO
+MTHI
+MTLO
+SRAV
+SRLV
+SLL
+SRA
+SRL
+DIVU
+MULTU
+DIV
+MULT
+JR
+JALR
+
+## IInstruction
+
+-- Populated
+
+LUI
+ADDI
+ADDIU
+ANDI
+ORI
+XORI
+SLTI
+SLTIU
+LW
+LHU
+LH
+LB
+LBU
+LWL
+LWR
+SB
+SH
+SW
+BEQ
+BNE
+BGTZ
+BLEZ
+BGEZ
+BLTZ
+BGEZAL
+BLTZAL
+
+## JInstructions
+
+- Populated
+
+J
+JAL

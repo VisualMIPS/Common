@@ -1,0 +1,84 @@
+## RInstructions
+
+-- Implemented
+
+ADD
+ADDU
+AND
+OR
+SUB
+SUBU
+XOR
+DIV
+DIVU
+MULT
+MULTU
+MFHI
+MFLO
+MTHI
+MTLO
+SLT
+SLTU
+SLL
+SLLV
+SRA
+SRAV
+SRL
+SRLV
+
+-- Not Implemented
+
+JR
+JALR
+
+## IInstruction
+
+-- Implemented
+
+// Arimethic stuff
+ADDI
+ADDIU
+ANDI
+ORI
+XORI
+
+// Branch stuff
+BEQ
+BNE
+BGTZ
+BLEZ
+
+// Branch with REGIMM
+BGEZ
+BLTZ
+BGEZAL
+BLTZAL
+
+// Memory stuff
+LB
+LBU
+LH
+LHU
+LW
+LUI
+SW
+SB
+SH
+
+// Conditional sets
+
+SLTI
+SLTIU
+
+-- Not Implemented
+
+// Tough memory stuff
+LWL
+LWR
+
+## JInstructions
+
+-- Implemented
+
+J
+JAL
