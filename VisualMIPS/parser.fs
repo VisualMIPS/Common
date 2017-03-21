@@ -36,7 +36,7 @@ module Parser =
     let parseI_Type (iTokens: string[]) =               
         let opcode = Map.find iTokens.[0] IMap
 
-        if iTokens.Length > 4 then failwithf "Invalid Operation: %A. Takes 3 parameters." iTokens.[0]
+        if iTokens.Length <> 4 then failwithf "Invalid Operation: %A. Takes 3 parameters." iTokens.[0]
 
         if not (isNum iTokens.[1]) then failwithf "rt: %A is invalid. Please use integers only." iTokens.[1]
         if not (regWithinRange (int iTokens.[1])) then failwithf "rt: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
@@ -91,18 +91,21 @@ module Parser =
     /// Parse (Opcode rs, offset) Same as I_S
     let parseI_SO_Type (iTokens: string[]) =
         let opcode = Map.find iTokens.[0] I_SOMap
-
-        if iTokens.Length <> 3 then failwithf "Invalid Operation: %A. Takes 2 parameters." iTokens.[0]
         
         if not (isNum iTokens.[1]) then failwithf "rs: %A is invalid. Please use integers only." iTokens.[1]
         if not (regWithinRange (int iTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
-        let r_s = iTokens.[1] |> int |> Register
+        let r_t, r_s =
+            match opcode with
+            | LUI when iTokens.Length = 2 -> (iTokens.[1] |> int |> Register), Register 0
+            | LUI when iTokens.Length <> 2 -> failwithf "Invalid Operation: %A. Takes 1 parameter." iTokens.[0]
+            | _ when iTokens.Length = 3 -> Register 0, (iTokens.[1] |> int |> Register)
+            | _ -> failwithf "Invalid Operation: %A. Takes 2 parameters." iTokens.[0]
 
         if not (isNum iTokens.[2]) then failwithf "offset: %A is invalid. Please use integers only." iTokens.[2]
         if not (immWithinRange (int iTokens.[2])) then failwithf "offset: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[2])
         let immed = iTokens.[2] |> uint16 |> Half
 
-        {opcode=opcode; instr_type = I_SO; rs=r_s; rt=Register 0; rd=Register 0; shift=Shiftval 0uy; immed=immed; target=Targetval 0u}
+        {opcode=opcode; instr_type = I_SO; rs=r_s; rt=r_t; rd=Register 0; shift=Shiftval 0uy; immed=immed; target=Targetval 0u}
     
     /// Parse (Opcode rt, offset(rs))
     let parseI_BO_Type (iTokens: string[]) =

@@ -25,21 +25,22 @@ module MachineCode =
         let code = uint32(opcode + rs + rt + int(uint16(offset)))
         code
 
-    let convertI_SOType (instr: Instruction) =
+    let convertI_SType (instr: Instruction) =
         let opcode = 0b000001
         let rs = T.getValue instr.rs <<< 21
-        let op = Map.find instr.opcode I_SOCodeMap <<< 16
+        let op = Map.find instr.opcode I_SCodeMap <<< 16
         let offset = T.getValue instr.immed
         // Return Machine Code as uint32 rather than binary
         let code = uint32(opcode + rs + op + int(uint16(offset)))
         code
 
-    let convertI_SType (instr: Instruction) =
-        let opcode = Map.find instr.opcode I_SCodeMap <<< 26
+    let convertI_SOType (instr: Instruction) =
+        let opcode = Map.find instr.opcode I_SOCodeMap <<< 26
         let rs = T.getValue instr.rs <<< 21
+        let rt = T.getValue instr.rt <<< 16
         let offset = T.getValue instr.immed
         // Return Machine Code as uint32 rather than binary
-        let code = uint32(opcode + rs + int(uint16(offset)))
+        let code = uint32(opcode + rs + rt + int(uint16(offset)))
         code
 
     let convertI_BOType (instr: Instruction) =
