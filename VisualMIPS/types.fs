@@ -39,7 +39,7 @@ module Instructions =
                     | SW | LUI | SLTI | SLTIU | J | JAL | ADD | ADDU | AND | OR | SRA 
                     | SRAV | SRL | SRLV | SLL | SLLV | SUB | SUBU 
                     | XOR | SLT | SLTU | DIV | DIVU | MULT | MULTU 
-                    | JR | JALR | MFHI | MFLO | MTHI | MTLO
+                    | JR | JALR | MFHI | MFLO | MTHI | MTLO | NOR
 
     let IMap = Map [("ADDI", ADDI);
                     ("ADDIU", ADDIU);
@@ -79,17 +79,12 @@ module Instructions =
                     ("ADDU", ADDU);
                     ("AND", AND);
                     ("OR", OR);
+                    ("NOR", NOR)
                     ("SUB", SUB);
                     ("SUBU", SUBU);
                     ("XOR", XOR);
                     ("SLT", SLT);
-                    ("SLTU", SLTU);
-                    ("DIV", DIV);
-                    ("DIVU", DIVU);
-                    ("MULT", MULT);
-                    ("MULTU", MULTU);
-                    ("MFHI", MFHI);
-                    ("MFLO", MFLO)]
+                    ("SLTU", SLTU)]
 
     let R_SMap = Map [("SRA", SRA);
                       ("SRL", SRL);
@@ -101,8 +96,15 @@ module Instructions =
 
     let R_JMap = Map [("JR", JR);
                       ("JALR", JALR);
+                      ("MFHI", MFHI);
+                      ("MFLO", MFLO);
                       ("MTHI", MTHI);
                       ("MTLO", MTLO)]
+
+    let R_MMap = Map [("DIV", DIV);
+                      ("DIVU", DIVU);
+                      ("MULT", MULT);
+                      ("MULTU", MULTU)]
 
     // Maps with Instruction Opcode as key and MachineCode Opcode as value
 
@@ -144,17 +146,12 @@ module Instructions =
                         (ADDU,  0b100001);
                         (AND,   0b100100);
                         (OR,    0b100101);
+                        (NOR,   0b100111)
                         (SUB,   0b100010);
                         (SUBU,  0b100011);
                         (XOR,   0b100110);
                         (SLT,   0b101010);
-                        (SLTU,  0b101011);
-                        (DIV,   0b011010);
-                        (DIVU,  0b011011);
-                        (MULT,  0b011000);
-                        (MULTU, 0b011001);
-                        (MFHI,  0b010000);
-                        (MFLO,  0b010010)]
+                        (SLTU,  0b101011)]
                         
     let R_SCodeMap = Map [(SRA,     0b000011);
                           (SRL,     0b000010);
@@ -166,11 +163,18 @@ module Instructions =
    
                         
     let R_JCodeMap = Map [(JR,      0b001000);
-                          (JALR,    0b001001);              
+                          (JALR,    0b001001);
+                          (MFHI,    0b010000);
+                          (MFLO,    0b010010);              
                           (MTHI,    0b010001);
                           (MTLO,    0b010011)]
 
-    type Instr_Type = | I | JJ | R | I_O | I_S | I_SO | I_BO | R_V | R_S | R_J
+    let R_MCodeMap = Map [(DIV,   0b011010);
+                          (DIVU,  0b011011);
+                          (MULT,  0b011000);
+                          (MULTU, 0b011001)]
+
+    type Instr_Type = | I | JJ | R | I_O | I_S | I_SO | I_BO | R_V | R_S | R_J | R_M
 
     type Instruction =
         {
