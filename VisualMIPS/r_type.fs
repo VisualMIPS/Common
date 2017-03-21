@@ -85,7 +85,15 @@ module Rtypes =
        
 
     let opJALR (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
-        failwithf "Not implemented yet"
+        // returns output = return_addr & mach with rs in PC
+        let returnAddress = Word( T.getValue(getNextPC mach) + 8u ) 
+        let returnMach =
+            match ((rS &&& 3u) = 0u) with
+            | true ->
+                setNextNextPC (Word(rS)) mach
+            | false -> 
+                setState (RunTimeErr "Address Error on JALR") mach
+        (returnAddress, returnMach)
 
     let opMTHI (mach: MachineState) (instr : Instruction) (rS) (Word rT) =
         setHi rS mach

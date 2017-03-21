@@ -94,8 +94,6 @@ module main =
     System.Console.ReadKey() |> ignore
     
     //for testing, remember to test invalid inputs 
-    // To do list : fill 4096 spaces in memory randomly or initialise to 0 when machine turned ON
-    // To do list : checks MachineState.State != RuntimeErr or SyntaxErr (if not RunOK, stop it)
     // To do list : give each isntruction an address in memory in order to implement JR instruction
     // To do list : Create RuntimeErr in SetMap and GetMap when trying to access negative and inexisting addresses
     // To do list : Add Exceptions as Address Error for LWL and LWR

@@ -35,7 +35,10 @@ module MachineState =
 
     /// Gets value of specified Memory location
     let getMem (mem: Memory) (mach: MachineState) =
-        Map.find mem mach.MemMap
+        match (T.getValue(mem) < 4096u) with
+        | true -> Map.find mem mach.MemMap
+        | false -> failwithf "RunTimeErr : unexisting memory address with function getMem"
+        
 
     /// Gets current State value
     let getState (mach: MachineState) =
@@ -85,9 +88,13 @@ module MachineState =
     
     /// Sets value into specified Memory location
     let setMem (mem: Memory) (data: Byte) (mach: MachineState) =
-        let newMemMap = Map.add mem data mach.MemMap
-        let newMach = {mach with MemMap = newMemMap}
-        newMach
+        match (T.getValue(mem) < 4096u) with
+        | true -> 
+            let newMemMap = Map.add mem data mach.MemMap
+            let newMach = {mach with MemMap = newMemMap}
+            newMach
+        | false -> failwithf "RunTimeErr : unexisting memory address with function setMem"
+        
     
     /// Sets value into State (RunState)
     let setState (state: RunState) (mach: MachineState) =
@@ -115,15 +122,9 @@ module MachineState =
         let regMap =
             let reg = [|0..31|]
             reg |> Array.map (fun i -> (Register(i), Word(0u))) |> Map.ofArray
+        let memMap =
+            let memSpace = [|0u..4095u|]
+            memSpace |> Array.map (fun i -> ( Memory(i), (Byte (byte 0)) ) ) |> Map.ofArray
+        let megaRecord ={RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u); pcNextNext=None}
+        megaRecord
 
-        let memMap = Map.empty
-
-        {RegMap=regMap; Hi=Word(0u); Lo=Word(0u); MemMap=memMap; State=RunOK; pc=Word(0u); pcNext=Word(4u); pcNextNext=None}
-            
-(* // Fronm C compiler -> keeps memory of clock cycles or smg, ct remember
-  void advance_pc (SWORD offset)
-{
-    PC  =  nPC;
-   nPC  += offset;
-} 
-*)

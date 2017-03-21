@@ -8,16 +8,19 @@ module Jtypes =
 
     //fullJ functions
 
-    let opJ (mach: MachineState) (instr : Instruction) (Targetval target) =
+    let opJ (mach: MachineState) (Targetval target) =
         // 4026531840 is 11110..0 //// 268435455 is 00001..1
         let address =  (T.getValue(getNextPC mach) &&& 4026531840u ) + ( (target <<< 2) &&& 268435455u ) 
         setNextNextPC (Word(address)) mach
        
     
     let opJAL (mach: MachineState) (Targetval target) =
-        failwith "not implemented yet"
-        //let address =  (T.getValue(getNextPC mach) &&& 4026531840u ) + ( (target <<< 2) &&& 268435455u ) 
-        //setNextNextPC (Word(address)) mach
+        let address =  Word( (T.getValue(getNextPC mach) &&& 4026531840u ) + ( (target <<< 2) &&& 268435455u ) )
+        let returnAddress = Word(T.getValue(address) + 4u)
+        mach
+        |> setNextNextPC address
+        |> setReg (Register 31) returnAddress
+
         // loads in rA the return address which is address of jal + 8 //rA is reg31
         // load PC with subroutine entry point (located in target) 
         // so that subr exe and then nextnextPC takes whats in 31 and executes it

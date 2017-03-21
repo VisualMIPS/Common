@@ -57,7 +57,7 @@ module Executor =
     let processFullR (instr: Instruction) (mach : MachineState) =
         let localMap1 = Map[(ADD,opADD);(SUB,opSUB);(JALR,opJALR)] //can change rd
         let localMap2 = Map[(DIV,opDIV);(DIVU,opDIVU);(MULT,opMULT);(MULTU,opMULTU);
-                        (JR,opJR);(MTHI,opMTHI);(MTLO,opMTLO)] //no need to change rd
+                            (JR,opJR);(MTHI,opMTHI);(MTLO,opMTLO)] //no need to change rd
         let rs = getReg instr.rs mach
         let rt = getReg instr.rt mach
         let returnMach =
@@ -145,7 +145,7 @@ module Executor =
         let localMap = Map[(J,opJ);(JAL,opJAL)]
         let target = instr.target
         let fn = Map.find instr.opcode localMap
-        let newMach = fn mach instr target
+        let newMach = fn mach target
         newMach
 
 
