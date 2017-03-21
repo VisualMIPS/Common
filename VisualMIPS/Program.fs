@@ -7,11 +7,17 @@ open Tokeniser
 open MachineState
 open MachineCode
 open Executor
+open Testing
 
 module main =
 
     // Test Tokeniser and Parser
+<<<<<<< HEAD
+    (*
     let input = tokenise "AND 32, 4, 5"
+=======
+    let input = tokenise "AND 1, 2, 3"
+>>>>>>> a7fd384348331c96eca8074bc36b0a445ade19db
     let AND = 
         try
             parse input
@@ -93,3 +99,14 @@ module main =
 
     System.Console.ReadKey() |> ignore
     
+<<<<<<< HEAD
+    //for testing, remember to test invalid inputs 
+    // To do list : give each isntruction an address in memory in order to implement JR instruction
+    // To do list : Create RuntimeErr in SetMap and GetMap when trying to access negative and inexisting addresses
+    // To do list : Add Exceptions as Address Error for LWL and LWR
+    *)
+    printf "The best output: %A" testAdd
+
+
+=======
+>>>>>>> a7fd384348331c96eca8074bc36b0a445ade19db
