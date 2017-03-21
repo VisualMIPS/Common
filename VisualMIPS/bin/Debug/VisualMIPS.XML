@@ -29,7 +29,7 @@
  Sets value into State (RunState)
 </summary>
 </member>
-<member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.Types.Memory,VisualMIPS.Types.Word,VisualMIPS.MachineState.MachineState)">
+<member name="M:VisualMIPS.MachineState.setMem(VisualMIPS.Types.Memory,VisualMIPS.Types.Byte,VisualMIPS.MachineState.MachineState)">
 <summary>
  Sets value into specified Memory location
 </summary>
@@ -92,6 +92,11 @@
 <member name="M:VisualMIPS.MachineState.getReg(VisualMIPS.Types.Register,VisualMIPS.MachineState.MachineState)">
 <summary>
  Gets value of specified Register
+</summary>
+</member>
+<member name="M:VisualMIPS.Parser.fail``1(System.String,System.Int32)">
+<summary>
+ Prints Parser Error message before ending program
 </summary>
 </member>
 <member name="M:VisualMIPS.Parser.printInstr(VisualMIPS.Instructions.Instruction)">
