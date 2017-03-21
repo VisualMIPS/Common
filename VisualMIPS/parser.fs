@@ -96,13 +96,16 @@ module Parser =
         
         if not (isNum iTokens.[1]) then failwithf "rs: %A is invalid. Please use integers only." iTokens.[1]
         if not (regWithinRange (int iTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
-        let r_s = iTokens.[1] |> int |> Register
+        let r_t, r_s =
+            match opcode with
+            | LUI -> (iTokens.[1] |> int |> Register), Register 0
+            | _ -> Register 0, (iTokens.[1] |> int |> Register)
 
         if not (isNum iTokens.[2]) then failwithf "offset: %A is invalid. Please use integers only." iTokens.[2]
         if not (immWithinRange (int iTokens.[2])) then failwithf "offset: %A is not within range. Accepted values between -32768 and 32767." (int iTokens.[2])
         let immed = iTokens.[2] |> uint16 |> Half
 
-        {opcode=opcode; instr_type = I_SO; rs=r_s; rt=Register 0; rd=Register 0; shift=Shiftval 0uy; immed=immed; target=Targetval 0u}
+        {opcode=opcode; instr_type = I_SO; rs=r_s; rt=r_t; rd=Register 0; shift=Shiftval 0uy; immed=immed; target=Targetval 0u}
     
     /// Parse (Opcode rt, offset(rs))
     let parseI_BO_Type (iTokens: string[]) =

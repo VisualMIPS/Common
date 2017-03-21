@@ -54,11 +54,11 @@ module Instructions =
 
     let I_SMap = Map [("BGEZ", BGEZ);
                       ("BGEZAL", BGEZAL);
+                      ("BLTZ", BLTZ);
                       ("BLTZAL", BLTZAL)]
                        
     let I_SOMap = Map [("BGTZ", BGTZ);
-                       ("BLEZ", BLEZ);
-                       ("BLTZ", BLTZ);
+                       ("BLEZ", BLEZ);                      
                        ("LUI", LUI)]
 
     let I_BOMap = Map [("LB", LB);
@@ -121,11 +121,11 @@ module Instructions =
 
     let I_SOCodeMap = Map [(BGEZ,   0b00001);
                            (BGEZAL, 0b10001);
+                           (BLTZ,   0b00000); 
                            (BLTZAL, 0b10000)]
 
     let I_SCodeMap = Map  [(BGTZ,   0b000111);
-                           (BLEZ,   0b000110);
-                           (BLTZ,   0b000001);                           
+                           (BLEZ,   0b000110);                          
                            (LUI,    0b001111)]
 
     let I_BOCodeMap = Map [(LB,     0b100000);
