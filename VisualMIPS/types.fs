@@ -36,7 +36,7 @@ module Instructions =
     type Opcode = | ADDI | ADDIU | ANDI | ORI | XORI 
                     | BEQ | BGEZ | BGEZAL | BGTZ | BLEZ | BLTZ | BLTZAL 
                     | BNE | LB | LBU | LH | LHU| LW | LWL | LWR | SB | SH 
-                    | SW | LUI | SLTI | SLTIU | J | JAL | ADD | ADDU | AND | OR | SRA 
+                    | SW | LUI | SLTI | SLTIU | J | JAL | ADD | ADDU | AND | NOR | OR | SRA 
                     | SRAV | SRL | SRLV | SLL | SLLV | SUB | SUBU 
                     | XOR | SLT | SLTU | DIV | DIVU | MULT | MULTU 
                     | JR | JALR | MFHI | MFLO | MTHI | MTLO | NOR

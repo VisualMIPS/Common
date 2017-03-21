@@ -38,8 +38,6 @@ module Rtypes =
             (outputSameRd , newMach)
 
 
-// left to do :  JR | JALR | 
-
     let opDIV (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         match rT with
         | 0u -> mach //div by 0 -> nothing happens
