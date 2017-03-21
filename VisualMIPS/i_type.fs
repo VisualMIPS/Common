@@ -18,7 +18,7 @@ module Itypes =
             (output, mach)
         | false -> //overflow occured
             let outputSameRd = getReg instr.rd mach
-            let newMach = setState (RunTimeErr "Overflow on ADD") mach
+            let newMach = setState (RunTimeErr "Overflow on ADDI") mach
             (outputSameRd , newMach)
 
     //memI functions

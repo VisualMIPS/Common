@@ -22,6 +22,7 @@ module Executor =
              | ADDU -> rs + rt
              | AND -> rs &&& rt
              | OR -> rs ||| rt
+             | NOR -> rs ~~~ rt
              | SRAV -> uint32(int32 rt >>> int32 rs)
              | SRLV -> rt >>> int32 rs
              | SLLV -> rt <<< int32 rs
@@ -154,7 +155,7 @@ module Executor =
     // Dispatch execution
 
     let opTypeMap = Map [
-                        ([ADDU; AND; OR; SRAV; SRLV; SLLV; SUBU; XOR; SLT; SLTU; MFHI; MFLO], processSimpleR);
+                        ([ADDU; AND; NOR; OR; SRAV; SRLV; SLLV; SUBU; XOR; SLT; SLTU; MFHI; MFLO], processSimpleR);
                         ([SRA; SRL; SLL], processShiftR);
                         ([ADD; SUB; JALR; DIV; DIVU; MULT; MULTU; JR; MTHI; MTLO], processFullR);
                         ([ADDIU; ANDI; ORI; XORI; LUI; SLTI; SLTIU],processSimpleI);
