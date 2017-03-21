@@ -15,7 +15,7 @@ module Rtypes =
 
     let opADD (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         let output32 =  int64( int32(rS) + int32(rT) )
-        let output64 =  int64(rS) + int64(rT)
+        let output64 =  int64( int32( rS)) + int64(rT)
         match output32=output64 with
         | true -> 
             let output = Word( rS + rT )
@@ -27,7 +27,7 @@ module Rtypes =
     
     let opSUB (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         let output32 =  int64( int32(rS) - int32(rT) )
-        let output64 =  int64(rS) - int64(rT)
+        let output64 =  int64( int32( rS)) - int64(rT)
         match output32=output64 with
         | true -> 
             let output = Word( rS - rT )
@@ -38,16 +38,17 @@ module Rtypes =
             (outputSameRd , newMach)
 
 
-// left to do :  JR | JALR | 
-
     let opDIV (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         match rT with
         | 0u -> mach //div by 0 -> nothing happens
         | _ -> // rS = q*rT + r 
-            let quotient = Word(uint32( int32(rS)/int32(rT) ))
-            let remainder = Word(uint32( int32(rS)%int32(rT) ))
-            let newMach = mach |> setHi remainder |> setLo quotient 
-            newMach
+            try
+                let quotient = Word(uint32( int32(rS)/int32(rT) ))
+                let remainder = Word(uint32( int32(rS)%int32(rT) ))
+                let newMach = mach |> setHi remainder |> setLo quotient 
+                newMach
+            with e->
+                mach
         
     let opDIVU (mach: MachineState) (instr : Instruction) (Word rS) (Word rT) =
         match rT with
