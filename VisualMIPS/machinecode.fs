@@ -28,14 +28,14 @@ module MachineCode =
     let convertI_SOType (instr: Instruction) =
         let opcode = 0b000001
         let rs = T.getValue instr.rs <<< 21
-        let op = Map.find instr.opcode ICodeMap <<< 16
+        let op = Map.find instr.opcode I_SOCodeMap <<< 16
         let offset = T.getValue instr.immed
         // Return Machine Code as uint32 rather than binary
         let code = uint32(opcode + rs + op + int(uint16(offset)))
         code
 
     let convertI_SType (instr: Instruction) =
-        let opcode = Map.find instr.opcode I_OCodeMap <<< 26
+        let opcode = Map.find instr.opcode I_SCodeMap <<< 26
         let rs = T.getValue instr.rs <<< 21
         let offset = T.getValue instr.immed
         // Return Machine Code as uint32 rather than binary
@@ -73,7 +73,7 @@ module MachineCode =
         let rt = T.getValue instr.rt <<< 16
         let rd = T.getValue instr.rd <<< 11
         let shift = T.getValue instr.shift <<< 6
-        let func = Map.find instr.opcode RCodeMap
+        let func = Map.find instr.opcode R_SCodeMap
         // Return Machine Code as uint32 rather than binary
         let code = uint32(opcode + rt + rd + int(shift)+ func)
         code
@@ -82,7 +82,7 @@ module MachineCode =
         let opcode = 0  // All R Types have opcode 0
         let rs = T.getValue instr.rs <<< 21
         let rd = T.getValue instr.rd <<< 11
-        let func = Map.find instr.opcode RCodeMap
+        let func = Map.find instr.opcode R_JCodeMap
         // Return Machine Code as uint32 rather than binary
         let code = uint32(opcode + rs + rd + func)
         code
@@ -90,7 +90,7 @@ module MachineCode =
     let convertR_MType (instr: Instruction) =
         let opcode = 0  // All R Types have opcode 0
         let rs = T.getValue instr.rs <<< 21
-        let rt = T.getValue instr.rt <<< 11
+        let rt = T.getValue instr.rt <<< 16
         let func = Map.find instr.opcode R_MCodeMap
         // Return Machine Code as uint32 rather than binary
         let code = uint32(opcode + rs + rt + func)

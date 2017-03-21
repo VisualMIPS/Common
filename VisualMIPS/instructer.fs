@@ -22,7 +22,7 @@ module Executor =
              | ADDU -> rs + rt
              | AND -> rs &&& rt
              | OR -> rs ||| rt
-             | NOR -> rs ~~~ rt
+             | NOR -> ~~~ (rs ||| rt)
              | SRAV -> uint32(int32 rt >>> int32 rs)
              | SRLV -> rt >>> int32 rs
              | SLLV -> rt <<< int32 rs

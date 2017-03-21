@@ -151,16 +151,14 @@ module Instructions =
                         (SUBU,  0b100011);
                         (XOR,   0b100110);
                         (SLT,   0b101010);
-                        (SLTU,  0b101011)]
+                        (SLTU,  0b101011);
+                        (SRAV,  0b000111);
+                        (SRLV,  0b000110);
+                        (SLLV,  0b000100)]
                         
     let R_SCodeMap = Map [(SRA,     0b000011);
                           (SRL,     0b000010);
-                          (SLL,     0b000000)]
-
-    let R_VCodeMap = Map [(SRAV,    0b000111);
-                          (SRLV,    0b000110);
-                          (SLLV,    0b000100)]                    
-   
+                          (SLL,     0b000000)]                  
                         
     let R_JCodeMap = Map [(JR,      0b001000);
                           (JALR,    0b001001);
