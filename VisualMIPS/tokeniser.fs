@@ -4,7 +4,8 @@ module Tokeniser =
 
     /// Tokenise single string/line into Tokens
     let tokenise (s: string) = 
-        Array.filter ((<>) "") (s.Split(' ',',','(',')','\t','\n','\r','\f'))
+        let nocomment = s.Split('#').[0]
+        Array.filter ((<>) "") (nocomment.Split(' ',',','(',')','\t','\n','\r','\f'))
 
     /// Splits large string into lines NOT NEEDED
     let split (input: string) =
