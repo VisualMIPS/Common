@@ -11,7 +11,7 @@ open Executor
 module main =
 
     // Test Tokeniser and Parser
-    let input = tokenise "AND 32, 4, 5"
+    let input = tokenise "AND 1, 2, 3"
     let AND = 
         try
             parse input

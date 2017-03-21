@@ -96,7 +96,7 @@
 </member>
 <member name="M:VisualMIPS.Parser.fail``1(System.String,System.Int32)">
 <summary>
- Prints Parser Error message before ending program
+ Prints Parser Error message before ending program (NOT USED)
 </summary>
 </member>
 <member name="M:VisualMIPS.Parser.printInstr(VisualMIPS.Instructions.Instruction)">
@@ -109,9 +109,14 @@
  Parses Token into Instruction
 </summary>
 </member>
+<member name="M:VisualMIPS.Parser.parseR_M_Type(System.String[])">
+<summary>
+ Parse (Opcode rs, rt)
+</summary>
+</member>
 <member name="M:VisualMIPS.Parser.parseR_J_Type(System.String[])">
 <summary>
- Parse (Opcode rd, rs) or (Opcode rs)
+ Parse (Opcode rd, rs) or (Opcode rs) or (Opcode rd)
 </summary>
 </member>
 <member name="M:VisualMIPS.Parser.parseR_S_Type(System.String[])">
