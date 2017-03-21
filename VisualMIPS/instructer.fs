@@ -84,7 +84,7 @@ module Executor =
         let immediateSigned = int32( int16( T.getValue instr.immed))
         let tmp = 
              match instr.opcode with
-             | ADDIU -> rs + immediateUnsigned 
+             | ADDIU -> rs + uint32(immediateSigned) 
              | ANDI -> rs &&& immediateUnsigned
              | ORI -> rs ||| immediateUnsigned
              | XORI -> rs ^^^ immediateUnsigned
@@ -94,7 +94,7 @@ module Executor =
                 | true -> 1u 
                 | false -> 0u
              | SLTIU ->
-                match rs < immediateUnsigned with
+                match rs < uint32(immediateSigned) with
                 | true -> 1u
                 | false -> 0u
              | _ -> failwith "opcode does not belong to processSimpleI functions"
