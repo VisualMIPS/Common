@@ -22,3 +22,11 @@
 /home/nathan/Desktop/HLP/ProjectFinal/Common/VisualMIPS/bin/Debug/Mono.Cecil.Mdb.dll
 /home/nathan/Desktop/HLP/ProjectFinal/Common/VisualMIPS/bin/Debug/Mono.Cecil.Pdb.dll
 /home/nathan/Desktop/HLP/ProjectFinal/Common/VisualMIPS/bin/Debug/Mono.Cecil.Rocks.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/Argu.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/Expecto.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/Expecto.FsCheck.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/FsCheck.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/Mono.Cecil.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/bin/Debug/Mono.Cecil.Rocks.dll

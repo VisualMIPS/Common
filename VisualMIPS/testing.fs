@@ -8,10 +8,13 @@ module Testing =
     open Instructions
     open MachineCode
     open Executor
+    open MachineState
 
     type TestCmd = 
         | GetState 
-        | SetReg of Register * Word 
+        | RegSet of Register * Word
+        | HISet of Word
+        | LOSet of Word
         | RunInstr of Instruction
         | Quit
 
@@ -21,7 +24,9 @@ module Testing =
     let getText (cmd: TestCmd) = 
         match cmd with
             | GetState -> "s"
-            | SetReg (a,b) -> "r "+(string a) + " " + (string b)
+            | RegSet (a,b) -> "r "+(a |> T.getValue |> string) + " " + (b |> T.getValue |> string)
+            | HISet a -> "h " + (a |> T.getValue |> string)
+            | LOSet a -> "l " + (a |> T.getValue |> string)
             | RunInstr i -> "i "+(i |> convert |> string)
             | Quit -> "q"
 
@@ -77,9 +82,60 @@ module Testing =
     let runList ls = 
         let strs = List.map getText ls
         let str = strs |> List.fold (fun x y -> x + y + "\n") ""
-        runProc "/Users/tom/Documents/Imperial/Year 3/HLP/Testing/golden/src/fyq14/test_mips" str
+        printf "%A" str |> ignore
+        runProc "/Users/tom/Documents/Imperial/Year 3/HLP/Common/VisualMIPS/golden-mips/src/fyq14/test_mips" str
+    
+    let getStateDONTUSE s =
+        match s with
+        | StateResult m -> m
 
+    let rng = System.Random()
+
+    let randChoice s = 
+        let len = List.length s
+        s.[rng.Next(0,len)]
+    
+    let randuint () = 
+        let a = rng.Next(1<<<30) |> uint32
+        let b = rng.Next(1<<<2) |> uint32
+        (a <<< 2) ||| b
+    
+    let randbool () =
+        match rng.Next(0,2) with
+            |0 -> false
+            |_ -> true
+    let regVal () =
+        let edgecases = [0x00000000u; 0x00000001u; 0xFFFFFFFFu; 0xF0F0F0F0u; 0x7FFFFFFFu; 0x80000000u; 0xDEADBEEFu]
+        if randbool () then
+            randChoice edgecases
+        else randuint ()
+
+    let randRegMap () =
+        [0..31] |> List.map (fun x -> (Register x, regVal () |> Word)) |> Map.ofList |> Map.add (Register 0) (Word 0u)
+        
+    let randReg () = rng.Next(0,32) |> Register
+
+    let cmdsFromRegMap rmap =
+        rmap |> Map.toList |> List.map RegSet
+
+    let emptyInstr = {opcode=ADDU; instr_type = R; rs=Register 0; rt=Register 0; rd=Register 0; shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
+
+    let testHILOs =
+        //let mthi = {emptyInstr with opcode=MTHI; instr_type = R_J; rs=randReg ()}
+        //let mtlo = {emptyInstr with opcode=MTLO; instr_type = R_J; rs=randReg ()}
+        let testMult = {emptyInstr with opcode=MULT; instr_type = R_M; rs=randReg (); rt=randReg()}
+        let mfhi = {emptyInstr with opcode=MFHI; instr_type = R_J; rd=randReg ()}
+        let mflo = {emptyInstr with opcode=MFLO; instr_type = R_J; rd=randReg ()}
+        let rMap = randRegMap ()
+        let cmds = List.append (cmdsFromRegMap rMap) [RunInstr testMult;RunInstr mfhi;RunInstr mflo; GetState; Quit]
+        let goldenResult = runList cmds
+        let mach = {initialise with RegMap = rMap} |> executeInstruction testMult |> executeInstruction mfhi |> executeInstruction mflo
+        mach.RegMap = (goldenResult |> getResults cmds |> List.head |> getStateDONTUSE)
+        
     let testAdd = 
-        let i = {opcode=ADDU; instr_type = R; rs=Register(3); rt=Register(4); rd=Register(5); shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
-        let goldenResult = runList [SetReg (Register 3, 42u);SetReg (Register 4, 9u);RunInstr i; GetState; Quit]
-        let mach = 
+        let i = {opcode=ADDU; instr_type = R; rs=randReg (); rt=randReg (); rd=randReg (); shift=Shiftval(0uy); immed=Half(0us); target=Targetval(0u)}
+        let rMap = randRegMap ()
+        let cmds = List.append (cmdsFromRegMap rMap) [RunInstr i; GetState; Quit]
+        let goldenResult = runList cmds
+        let mach = {initialise with RegMap = rMap} |> executeInstruction i
+        mach.RegMap = (goldenResult |> getResults cmds |> List.head |> getStateDONTUSE)

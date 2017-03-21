@@ -7,10 +7,12 @@ open Tokeniser
 open MachineState
 open MachineCode
 open Executor
+open Testing
 
 module main =
 
     // Test Tokeniser and Parser
+    (*
     let input = tokenise "AND 32, 4, 5"
     let AND = 
         try
@@ -97,3 +99,7 @@ module main =
     // To do list : give each isntruction an address in memory in order to implement JR instruction
     // To do list : Create RuntimeErr in SetMap and GetMap when trying to access negative and inexisting addresses
     // To do list : Add Exceptions as Address Error for LWL and LWR
+    *)
+    printf "The best output: %A" testAdd
+
+

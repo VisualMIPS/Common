@@ -159,6 +159,9 @@
  Parse (Opcode rt, rs, immediate)
 </summary>
 </member>
+<member name="M:VisualMIPS.Testing.runList(Microsoft.FSharp.Collections.FSharpList{VisualMIPS.Testing.TestCmd})">
+
+</member>
 <member name="M:VisualMIPS.Tokeniser.split(System.String)">
 <summary>
  Splits large string into lines NOT NEEDED
