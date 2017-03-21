@@ -100,3 +100,12 @@ module main =
     // To do list : Add Exceptions as Address Error for LWL and LWR
     *)
     printf "The best output: %A" (runTests ())
+    (*let j = {opcode = ADDIU;
+           instr_type = I;
+           rs = Register 7;
+           rt = Register 23;
+           rd = Register 0;
+           shift = Shiftval 0uy;
+           immed = Half 57247us;
+           target = Targetval 0u;}
+    printfn "%A" (convert j)*)

@@ -13,7 +13,7 @@ module MachineCode =
         let rt = T.getValue instr.rt <<< 16
         let imm = T.getValue instr.immed
         // Return Machine Code as uint32 rather than binary
-        let code = uint32(opcode + rs + rt + int(uint16(imm)))
+        let code = uint32(opcode + rs + rt + int(imm))
         code
 
     let convertI_OType (instr: Instruction) =
@@ -72,7 +72,7 @@ module MachineCode =
         let opcode = 0  // All R Types have opcode 0
         let rt = T.getValue instr.rt <<< 16
         let rd = T.getValue instr.rd <<< 11
-        let shift = T.getValue instr.shift <<< 6
+        let shift = ((T.getValue instr.shift) |> uint32 )<<< 6
         let func = Map.find instr.opcode R_SCodeMap
         // Return Machine Code as uint32 rather than binary
         let code = uint32(opcode + rt + rd + int(shift)+ func)
@@ -109,4 +109,5 @@ module MachineCode =
         | x when instr.instr_type = R_V -> convertR_Type x
         | x when instr.instr_type = R_J -> convertR_JType x
         | x when instr.instr_type = R_M -> convertR_MType x
+        | x when instr.instr_type = R_S -> convertR_SType x
         | _ -> failwith "Invalid Instruction!"
