@@ -110,8 +110,7 @@ module MachineState =
         printfn "State: \t\t%A" mach.State
 
         printfn "Registers:"
-        for i in 0..31 do
-            printfn "\t\tR%A:\t%A" i mach.RegMap.[Register(i)]
+        [0..31] |> List.iter(fun i -> printfn "\t\tR%A:\t%A" i mach.RegMap.[Register(i)] )
         printfn "\t\tHigh:\t%A" mach.Hi
         printfn "\t\tLow:\t%A" mach.Lo
 

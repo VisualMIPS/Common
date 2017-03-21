@@ -93,7 +93,3 @@ module main =
 
     System.Console.ReadKey() |> ignore
     
-    //for testing, remember to test invalid inputs 
-    // To do list : give each isntruction an address in memory in order to implement JR instruction
-    // To do list : Create RuntimeErr in SetMap and GetMap when trying to access negative and inexisting addresses
-    // To do list : Add Exceptions as Address Error for LWL and LWR
