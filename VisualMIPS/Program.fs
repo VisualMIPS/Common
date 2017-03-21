@@ -86,7 +86,7 @@ module main =
     initialise
     |> setReg (Register 3) (Word 32u)
     |> setReg (Register 2) (Word 32u)
-    |> executeInstruction AND // Result is R1=32u
+    |> executeInstruction J // Result is R1=32u
     |> executeInstruction XOR // Result is R4=0u
     |> printMachineState
     |> ignore

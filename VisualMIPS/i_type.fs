@@ -11,8 +11,8 @@ module Itypes =
     let opADDI (mach: MachineState) (instr : Instruction) (Word rS) (Half immediate) =
         let immediateSigned = int16 immediate
         let output32 =  int64( int32(rS) + int32(immediateSigned) )
-        let output64 =  int64(rS) + int64(immediateSigned)
-        match output32=output64 with
+        let output64 =  int64( int32( rS)) + int64(immediateSigned)
+        match (output32=output64) with
         | true -> 
             let output = Word( rS + uint32(immediateSigned) )
             (output, mach)
