@@ -109,6 +109,7 @@ module Testing =
         if randbool () then
             randChoice edgecases //50% chance of picking an edge case, 50% chance of picking a totally random value
         else randuint ()
+    
     let randRegMap () =
         [0..31] |> List.map (fun x -> (Register x, regVal () |> Word)) |> Map.ofList |> Map.add (Register 0) (Word 0u)
     let randReg () = rng.Next(0,32) |> Register
@@ -137,9 +138,8 @@ module Testing =
                 |StateResult u, StateResult g -> printfn "Output %A does not match:" n; printDiffs u g
                 | _,_ -> printfn "Strange bugs are afoot." //For later on when we have multiple types
 
-
     let runTest cmds=
-        let supress = true //Supress output for debugging
+        let supress = false //Supress output for debugging
 
         let ourOutput = try runCmdsLocal cmds |> Some
                         with x -> printError "EXCEPTION IN OUR CODE" cmds; printfn "%A" x; None
@@ -175,14 +175,32 @@ module Testing =
         let rMap = randRegMap ()
         let cmds = List.append (cmdsFromRegMap rMap) [RunInstr i; GetState; Quit]
         runTest cmds
-    (*
-    let testSETHILO oc =
-        let testMult = {emptyInstr with opcode=MTHI; instr_type = R_M; rs=randReg (); rt=randReg()}
+    
+    let testMTHI oc =
+        let testMthi = {emptyInstr with opcode=MTHI; instr_type = R_J; rs=randReg()}
         let mfhi = {emptyInstr with opcode=MFHI; instr_type = R_J; rd=randReg ()}
+        let rMap = randRegMap ()
+        let cmds = List.append (cmdsFromRegMap rMap) [RunInstr testMthi;RunInstr mfhi; GetState; Quit]
+        runTest cmds
+    
+    let testMTLO oc =
+        let testMtlo = {emptyInstr with opcode=MTLO; instr_type = R_J; rs=randReg ()}
         let mflo = {emptyInstr with opcode=MFLO; instr_type = R_J; rd=randReg ()}
         let rMap = randRegMap ()
-        let cmds = List.append (cmdsFromRegMap rMap) [RunInstr testMult;RunInstr mfhi;RunInstr mflo; GetState; Quit]
-    *)
+        let cmds = List.append (cmdsFromRegMap rMap) [RunInstr testMtlo;RunInstr mflo; GetState; Quit]
+        runTest cmds
+
+    let testMem oc =
+        let memOffset = rng.Next(100,200)
+        let memBase = rng.Next(100,200) |> uint32
+        let rsreg = randReg () //Base register
+        
+        let testSetByte = {emptyInstr with opcode=SB; instr_type = I_BO; rs=rsreg; rt = randReg(); immed=memOffset |>uint16 |> Half}
+        let testReadByte = {emptyInstr with opcode=LB; instr_type = I_BO; rs=rsreg; rt = randReg(); immed=memOffset|>uint16 |> Half}
+        let rMap = randRegMap ()
+        let cmds = List.concat [cmdsFromRegMap rMap;[RegSet (rsreg,Word memBase)];[RunInstr testSetByte;RunInstr testReadByte; GetState; Quit]]
+        runTest cmds
+    
     let runMany n f m = 
         let outputs = List.map (fun x -> f ()) [1..n]
         printfn "For tests on %A :: %A" m (List.countBy id outputs)
@@ -199,3 +217,7 @@ module Testing =
         List.map (rm testM) m_ocs |> ignore
         List.map (rm testR_S) r_socs |> ignore
         List.map (rm testI) i_ocs |> ignore
+        List.map (rm testMTHI) [MTHI] |> ignore
+        List.map (rm testMTLO) [MTLO] |> ignore
+        List.map (rm testMem) [SB] |> ignore
+        List.map (rm testMem) [LB] |> ignore

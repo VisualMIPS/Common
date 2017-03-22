@@ -60,8 +60,8 @@ module MachineState =
         let m = {mach with pc = mach.pcNext}
         let m2 = 
             match mach.pcNextNext with
-            |Some nnext -> {mach with pcNext = nnext}
-            |None -> {mach with pcNext = Word (T.getValue(mach.pcNext)+4u)}
+            |Some nnext -> {m with pcNext = nnext}
+            |None -> {m with pcNext = Word (T.getValue(mach.pcNext)+4u)}
         {m2 with pcNextNext = None}
 
     /// Sets next, next PC value
