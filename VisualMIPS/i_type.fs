@@ -122,7 +122,9 @@ module Itypes =
             |> createBytes
         let modifRt =  
             let shiftToEraseVal = 8*int32( 4u - byteNumber )
-            Word( ( ( rT <<< shiftToEraseVal ) >>> shiftToEraseVal ) + fetchedBytes )
+            match (byteNumber=0u) with //fixes wrap around of the <<</>>> (Undocumented by F#)
+            | false -> Word( ( ( rT <<< shiftToEraseVal ) >>> shiftToEraseVal ) + fetchedBytes )
+            | true -> Word(fetchedBytes)
         let returnMach = setReg instr.rt modifRt mach
         returnMach
     let opLWR (mach: MachineState) (instr : Instruction) (Word rT) (Word myBase) (Half offset) =

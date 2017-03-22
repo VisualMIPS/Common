@@ -96,8 +96,7 @@ module Parser =
         if not (regWithinRange (int iTokens.[1])) then failwithf "rs: %A is not within range. Accepted Registers between 0 and 31." (int iTokens.[1])
         let r_t, r_s =
             match opcode with
-            | LUI when iTokens.Length = 2 -> (iTokens.[1] |> int |> Register), Register 0
-            | LUI when iTokens.Length <> 2 -> failwithf "Invalid Operation: %A. Takes 1 parameter." iTokens.[0]
+            | LUI when iTokens.Length = 3 -> (iTokens.[1] |> int |> Register), Register 0
             | _ when iTokens.Length = 3 -> Register 0, (iTokens.[1] |> int |> Register)
             | _ -> failwithf "Invalid Operation: %A. Takes 2 parameters." iTokens.[0]
 
