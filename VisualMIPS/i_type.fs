@@ -99,7 +99,7 @@ module Itypes =
                     let createAddress x = Memory( myBase + offsetSigned + x ) 
                     let loadContent x = uint32( T.getValue( getMem x mach ))
                     let createWord x = List.fold (fun acc y -> (acc <<< 8) + y) 0u x
-                    [0u; 1u; 2u; 3u] //[0u..3u]
+                    [3u; 2u; 1u; 0u] //[0u..3u]
                     |> List.map (createAddress >> loadContent) 
                     |> createWord
                 let outputWord = Word( output ) 
